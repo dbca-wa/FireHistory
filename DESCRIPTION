@@ -1,0 +1,16 @@
+Package: FireHistory
+Title: Tools to aid querying DBCA fire history data
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Bart", "Huntley", email = "bart.huntley@dbca.wa.gov.au",
+      role = c("aut", "cre", "prg", "res"),
+      comment = c(ORCID = "0000-0002-9519-4105")),
+    person("Ricky", "vanDongen", email = "ricky.vandongen@dbca.wa.gov.au",
+      role = "ctb",
+      comment = c(ORCID = "0000-0002-6675-5639")))
+Description: Functions in this package aid querying the Department of 
+    Biodiversity, Conservation and Attractions' fire history dataset.
+License: file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
