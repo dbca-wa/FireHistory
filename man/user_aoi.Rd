@@ -2,7 +2,7 @@
 % Please edit documentation in R/data_prep.R
 \name{user_aoi}
 \alias{user_aoi}
-\title{Import a users aoi shape file}
+\title{Import a user's area of interest shape file}
 \usage{
 user_aoi(aoi_path, name)
 }
@@ -19,12 +19,12 @@ A named list containing \code{aoi} (an sf class object) and \code{aoi_name}
 }
 \description{
 \code{user_aoi} reads in a shape file from a file path to be used to query the
-DBCA Fire History data.
+DBCA Fire History dataset.
 }
 \details{
 Under the hood, \code{user_aoi}, will on reading in the data, repair geometry and
-transform the original coordinate reference system to GDA 2020 (Albers
-Australia, EPSG:7844).
+transform the original coordinate reference system to GDA 2020 (Geodetic,
+EPSG:7844).
 }
 \examples{
 \dontrun{
