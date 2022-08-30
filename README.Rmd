@@ -38,4 +38,4 @@ devtools::install_github("Bartesto/FireHistory")
 
 ## Help Files
 
-All functions within FireHistory have the usual R help files, however the best place to see these and some helpful articles describing the intended workflow is the [FireHistory website](https://Bartesto.github.io/FireHistory/index.html)
+All functions within FireHistory have the usual R help files, however the best place to see these and some helpful articles describing the intended workflow is the [FireHistory website](https://bartesto.github.io/FireHistory/index.html)
