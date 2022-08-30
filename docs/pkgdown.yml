@@ -1,0 +1,10 @@
+pandoc: '2.18'
+pkgdown: 2.0.1
+pkgdown_sha: ~
+articles:
+  one: one.html
+last_built: 2022-08-30T08:33Z
+urls:
+  reference: https://Bartesto.github.io/FireHistory/reference
+  article: https://Bartesto.github.io/FireHistory/articles
+

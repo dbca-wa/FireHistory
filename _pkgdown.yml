@@ -1,0 +1,31 @@
+template:
+  params:
+    bootswatch: flatly
+
+destination: docs
+
+articles:
+  - title: Helpful guide
+    desc: >
+      A helpful guide that describes the workflow utilising the FireHistory package
+    contents:
+      - one
+
+reference:
+  - title: "Data Preparation"
+    desc: >
+      Readying the inputs for analysis and metrics creation
+    contents:
+      - user_aoi
+      - find_tenure
+      - DBCA_aoi
+      - assemble_data
+
+  - title: "Making Metrics"
+    desc: >
+      Functions to create fire metrics
+    contents:
+      - yslb
+      - fire_freq
+
+url: https://Bartesto.github.io/FireHistory
