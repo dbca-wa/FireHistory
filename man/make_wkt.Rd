@@ -4,11 +4,13 @@
 \alias{make_wkt}
 \title{Make well known text string from bounding box of an area of interest}
 \usage{
-make_wkt(aoi)
+make_wkt(aoi, fh_crs)
 }
 \arguments{
 \item{aoi}{an aoi list object created from running either \code{\link[=user_aoi]{user_aoi()}}
 or \code{\link[=DBCA_aoi]{DBCA_aoi()}}.}
+
+\item{fh_crs}{crs of the Fire History input data.}
 }
 \value{
 A WKT representation of the area of interest's bounding box.

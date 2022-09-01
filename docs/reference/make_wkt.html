@@ -49,7 +49,7 @@ use in filtering the DBCA Fire History dataset.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_wkt</span><span class="op">(</span><span class="va">aoi</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_wkt</span><span class="op">(</span><span class="va">aoi</span>, <span class="va">fh_crs</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -57,6 +57,8 @@ use in filtering the DBCA Fire History dataset.</p>
     <dl><dt>aoi</dt>
 <dd><p>an aoi list object created from running either <code><a href="user_aoi.html">user_aoi()</a></code>
 or <code><a href="DBCA_aoi.html">DBCA_aoi()</a></code>.</p></dd>
+<dt>fh_crs</dt>
+<dd><p>crs of the Fire History input data.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
