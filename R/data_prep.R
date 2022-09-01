@@ -109,6 +109,8 @@ DBCA_aoi <- function(choice){
 #' @param aoi an aoi list object created from running either [FireHistory::user_aoi()]
 #' or [FireHistory::DBCA_aoi()].
 #'
+#' @param fh_crs crs of the Fire History input data.
+#'
 #' @returns A WKT representation of the area of interest's bounding box.
 #'
 #' @examples
@@ -119,8 +121,9 @@ DBCA_aoi <- function(choice){
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
 #'
 #' @import sf
-make_wkt <- function(aoi){
-  aoi_wkt <- sf::st_bbox(aoi[['aoi']]) |>
+make_wkt <- function(aoi, fh_crs){
+  aoi_wkt <- sf::st_transform(aoi[['aoi']], fh_crs) |>
+    sf::st_bbox() |>
     sf::st_as_sfc() |>
     sf::st_geometry() |>
     sf::st_as_text()
@@ -169,8 +172,14 @@ make_wkt <- function(aoi){
 #'
 #' @export
 assemble_data <- function(fire_path, from, to, aoi){
-  wkt_flt <- make_wkt(aoi)
+  # find crs of fh input
+  fname <- tools::file_path_sans_ext(basename(fire_path))
+  fquery <- paste0('SELECT * from ', fname, ' LIMIT 1')
+  fh_crs <- sf::st_crs(sf::read_sf(fire_path, query = fquery))
+  # match crs and proceed
+  wkt_flt <- make_wkt(aoi, fh_crs)
   fh <- sf::st_read(dsn = fire_path, quiet = TRUE, wkt_filter = wkt_flt)
+  names(fh) <- tolower(names(fh))
   if(dim(fh)[1] != 0){
     fh_alb <- fh |>
       dplyr::filter(fih_year1 >= from & fih_year1 <= to) |>
