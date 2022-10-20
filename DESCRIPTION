@@ -13,7 +13,7 @@ Description: Functions in this package aid querying the Department of
 License: file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Depends: 
     R (>= 4.1.0)
 Imports: 
@@ -23,4 +23,5 @@ Imports:
     snakecase,
     rasterVis,
     ggplot2,
-    readr
+    readr,
+    cli

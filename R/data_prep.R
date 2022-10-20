@@ -118,6 +118,8 @@ DBCA_aoi <- function(choice){
 #' wkt_filter <- make_wkt(aoi = aoi)
 #' }
 #'
+#' @keywords internal
+#'
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
 #'
 #' @import sf
@@ -169,15 +171,19 @@ make_wkt <- function(aoi, fh_crs){
 #'
 #' @import sf
 #' @importFrom terra vect
+#' @importFrom cli cli_progress_step
 #'
 #' @export
 assemble_data <- function(fire_path, from, to, aoi){
+  # messenging
+  cli::cli_progress_step("Obtaining extents")
   # find crs of fh input
   fname <- tools::file_path_sans_ext(basename(fire_path))
   fquery <- paste0('SELECT * from ', fname, ' LIMIT 1')
   fh_crs <- sf::st_crs(sf::read_sf(fire_path, query = fquery))
   # match crs and proceed
   wkt_flt <- make_wkt(aoi, fh_crs)
+  cli::cli_progress_step("Querying the fire history")
   fh <- sf::st_read(dsn = fire_path, quiet = TRUE, wkt_filter = wkt_flt)
   names(fh) <- tolower(names(fh))
   if(dim(fh)[1] != 0){

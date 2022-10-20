@@ -49,7 +49,7 @@ query the DBCA Fire History dataset.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">DBCA_aoi</span><span class="op">(</span><span class="va">choice</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DBCA_aoi</span><span class="op">(</span><span class="va">choice</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -57,10 +57,16 @@ query the DBCA Fire History dataset.</p>
     <dl><dt>choice</dt>
 <dd><p>a  character vector of a single DBCA tenure name as determined by
 previously running <code><a href="find_tenure.html">find_tenure()</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A named list containing <code>aoi</code> (an sf class object) and <code>aoi_name</code>(the tenure name of the aoi).</p>
+    
+
+<p>A named list containing <code>aoi</code> (an sf class object) and <code>aoi_name</code></p>
+
+
+<p>(the tenure name of the aoi).</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -69,10 +75,10 @@ previously running <code><a href="find_tenure.html">find_tenure()</a></code>.</p
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu">DBCA_aoi</span><span class="op">(</span>choice <span class="op">=</span> <span class="st">"Wandoo National Park"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu">DBCA_aoi</span><span class="op">(</span>choice <span class="op">=</span> <span class="st">"Wandoo National Park"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -87,8 +93,7 @@ previously running <code><a href="find_tenure.html">find_tenure()</a></code>.</p
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

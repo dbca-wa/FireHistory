@@ -121,11 +121,9 @@ it. You can only install the package from the GitHub repository. If you
 haven’t already installed R package <code>devtools</code> you will need
 to do this first.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Bartesto/FireHistory"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">FireHistory</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">#&gt; Warning: replacing previous import 'ggplot2::arrow' by 'terra::arrow' when</span>
-<span class="co">#&gt; loading 'FireHistory'</span></code></pre>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Bartesto/FireHistory"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">FireHistory</span><span class="op">)</span></span></code></pre></div>
 <p>The basic workflow of data preparation is that a polygon/s
 representing an area of interest (AOI) will be used to spatially subset
 the DBCA fire history which will be further temporally filtered based on
@@ -134,12 +132,12 @@ some user parameters. There are two options for defining an aoi.</p>
 <h3 id="user-supplied-aoi">User supplied AOI<a class="anchor" aria-label="anchor" href="#user-supplied-aoi"></a>
 </h3>
 <p>Got your own shapefile that you would like to use? No problems.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># file path to your shape file - note includes the file extension</span>
-<span class="va">my_shape</span> <span class="op">&lt;-</span> <span class="st">"C:/somewhere/myshapefile.shp"</span>
-
-<span class="co"># import it</span>
-<span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/user_aoi.html">user_aoi</a></span><span class="op">(</span>aoi_path <span class="op">=</span> <span class="va">my_shape</span>, name <span class="op">=</span> <span class="st">"A very meaningful name"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># file path to your shape file - note includes the file extension</span></span>
+<span><span class="va">my_shape</span> <span class="op">&lt;-</span> <span class="st">"C:/somewhere/myshapefile.shp"</span></span>
+<span></span>
+<span><span class="co"># import it</span></span>
+<span><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/user_aoi.html">user_aoi</a></span><span class="op">(</span>aoi_path <span class="op">=</span> <span class="va">my_shape</span>, name <span class="op">=</span> <span class="st">"A very meaningful name"</span><span class="op">)</span></span></code></pre></div>
 <p>Make sure your shapefile has a coordinate reference system. There
 doesn’t need to be any specific information in the attribute table and
 there can be multiple polygons if necessary as long as when assessed
@@ -152,37 +150,37 @@ something helpful as all your products and plots will feature this.</p>
 <p>Want to use a National Park boundary as the AOI but don’t know how to
 get it it what it’s full name is? No problems. The package ships with a
 complete listing of tenure names as well as their boundaries.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># have a look at the first few records....there's 1000+</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/find_tenure.html">find_tenure</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Highbury Nature Reserve"             </span>
-<span class="co">#&gt; [2] "Badgingarra National Park"           </span>
-<span class="co">#&gt; [3] "Dwellingup State Forest"             </span>
-<span class="co">#&gt; [4] "Karnet Nature Reserve"               </span>
-<span class="co">#&gt; [5] "Myalup State Forest"                 </span>
-<span class="co">#&gt; [6] "Recherche Archipelago Nature Reserve"</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># have a look at the first few records....there's 1000+</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/find_tenure.html">find_tenure</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Highbury Nature Reserve"             </span></span>
+<span><span class="co">#&gt; [2] "Badgingarra National Park"           </span></span>
+<span><span class="co">#&gt; [3] "Dwellingup State Forest"             </span></span>
+<span><span class="co">#&gt; [4] "Karnet Nature Reserve"               </span></span>
+<span><span class="co">#&gt; [5] "Myalup State Forest"                 </span></span>
+<span><span class="co">#&gt; [6] "Recherche Archipelago Nature Reserve"</span></span></code></pre></div>
 <p>That could take a while. Say we are pretty sure our National park AOI
 has something to do with wandoo.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># search for something like wandoo</span>
-<span class="fu"><a href="../reference/find_tenure.html">find_tenure</a></span><span class="op">(</span>like <span class="op">=</span> <span class="st">"wandoo"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Wandoo National Park"    "Wandoora Nature Reserve"</span>
-
-<span class="co"># there are a few close matches but we want the first one and save it to an object</span>
-<span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_tenure.html">find_tenure</a></span><span class="op">(</span>like <span class="op">=</span> <span class="st">"wandoo"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># search for something like wandoo</span></span>
+<span><span class="fu"><a href="../reference/find_tenure.html">find_tenure</a></span><span class="op">(</span>like <span class="op">=</span> <span class="st">"wandoo"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Wandoo National Park"    "Wandoora Nature Reserve"</span></span>
+<span></span>
+<span><span class="co"># there are a few close matches but we want the first one and save it to an object</span></span>
+<span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_tenure.html">find_tenure</a></span><span class="op">(</span>like <span class="op">=</span> <span class="st">"wandoo"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
 <p>Now that we have the correct name we can retrieve the tenure boundary
 and save it as our AOI.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DBCA_aoi.html">DBCA_aoi</a></span><span class="op">(</span>choice <span class="op">=</span> <span class="va">location</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DBCA_aoi.html">DBCA_aoi</a></span><span class="op">(</span>choice <span class="op">=</span> <span class="va">location</span><span class="op">)</span></span></code></pre></div>
 <p>Whichever way you define an AOI these functions will return a list
 containing a spatial object and its name.</p>
 <p>After defining the AOI, you use it to subset the downloaded fire
 history data.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># file path to the fire history data - note includes the file extension</span>
-<span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"C:/somewhere/DBCA_Fire_History_DBCA_060.shp"</span>
-<span class="co"># here we want to temporally restrict it to the period 1988-2022</span>
-<span class="va">wandoo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, from <span class="op">=</span> <span class="fl">1988</span>, to <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># file path to the fire history data - note includes the file extension</span></span>
+<span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"C:/somewhere/DBCA_Fire_History_DBCA_060.shp"</span></span>
+<span><span class="co"># here we want to temporally restrict it to the period 1988-2022</span></span>
+<span><span class="va">wandoo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, from <span class="op">=</span> <span class="fl">1988</span>, to <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span><span class="op">)</span></span></code></pre></div>
 <p>Whilst the fire history data is huge, as it is subset using the AOI
 prior to reading into memory, this process is reasonably fast (about
 10-20 seconds for the wandoo data set). Saving it to an object (here
@@ -197,9 +195,9 @@ tenure and generally even better in more populous regions/areas.</p>
 </h2>
 <p>Now it is time to generate some fire metrics. Here is an example to
 calculate Year Since Last Burn (YSLB).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># create YSLB for the Wandoo National Park</span>
-<span class="va">yslb_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/yslb.html">yslb</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">wandoo_data</span>, products <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create YSLB for the Wandoo National Park</span></span>
+<span><span class="va">yslb_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/yslb.html">yslb</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">wandoo_data</span>, products <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>By saving it to an object it creates a list containing:</p>
 <ul>
 <li>A YSLB raster of class terra</li>
@@ -232,8 +230,7 @@ folder in your working directory and save the four products to it.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

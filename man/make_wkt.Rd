@@ -28,3 +28,4 @@ wkt_filter <- make_wkt(aoi = aoi)
 \author{
 Bart Huntley, \email{bart.huntley@dbca.wa.gov.au}
 }
+\keyword{internal}
