@@ -36,6 +36,7 @@
 #' @import ggplot2
 #' @importFrom dplyr as_tibble mutate rename select
 #' @importFrom readr write_csv
+#' @importFrom magrittr %>%
 #'
 #' @export
 yslb <- function(data, products = TRUE){
@@ -64,9 +65,9 @@ yslb <- function(data, products = TRUE){
     coord_equal() +
     theme_bw()
   # stats
-  yslb_stats <- dplyr::as_tibble(terra::freq(yslb)) |>
-    dplyr::mutate(area_ha = count * 0.09) |>
-    dplyr::rename(yslb = value) |>
+  yslb_stats <- dplyr::as_tibble(terra::freq(yslb)) %>%
+    dplyr::mutate(area_ha = count * 0.09) %>%
+    dplyr::rename(yslb = value) %>%
     dplyr::select(-layer, -count)
   # plot
   yslb_plot <- ggplot(yslb_stats) +
@@ -127,6 +128,7 @@ yslb <- function(data, products = TRUE){
 #' @import ggplot2
 #' @importFrom dplyr as_tibble mutate rename select
 #' @importFrom readr write_csv
+#' @importFrom magrittr %>%
 #'
 #' @export
 fire_freq <- function(data, products = TRUE){
@@ -153,9 +155,9 @@ fire_freq <- function(data, products = TRUE){
     coord_equal() +
     theme_bw()
   # stats
-  freq_stats <- dplyr::as_tibble(terra::freq(fire_frq)) |>
-    dplyr::mutate(area_ha = count * 0.09) |>
-    dplyr::rename(yslb = value) |>
+  freq_stats <- dplyr::as_tibble(terra::freq(fire_frq)) %>%
+    dplyr::mutate(area_ha = count * 0.09) %>%
+    dplyr::rename(yslb = value) %>%
     dplyr::select(-layer, -count)
   # plot
   freq_plot <- ggplot(freq_stats) +
