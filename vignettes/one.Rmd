@@ -46,7 +46,7 @@ login requirement is for statistics only. Once logged in you will have the abili
 to download the data in two different Datums. Please choose the GDA2020 version.
 
 At time of writing the download was 939MB and should take a few minutes depending 
-on connection speeds. Make sure you save it somewher locally on your computer and 
+on connection speeds. Make sure you save it somewhere locally on your computer and 
 remember how to get to it.
 
 While on the data WA website, also click on the `Resources` drop down menu and 
@@ -86,13 +86,16 @@ to be any specific information in the attribute table and there can be multiple
 polygons if necessary as long as when assessed together it makes sense. The parameter 
 `name` should be something helpful as all your products and plots will feature this.
 
-### DBCA tenure AOI
-Want to use a National Park boundary as the AOI but don't know how to get it it 
-what it's full name is? No problems. The package ships with a complete listing 
-of tenure names as well as their boundaries. 
+### DBCA tenure or forest block AOI
+Want to use a National Park boundary or a forest block as the AOI but don't know 
+how to get it or what it's full name is? No problems. The package ships with a 
+complete listing of tenure and forest block names as well as their boundaries. 
 ```{r, message=FALSE, warning=FALSE}
-# have a look at the first few records....there's 1000+
+# For DBCA tenure - have a look at the first few records....there's 1000+
 head(find_tenure())
+
+# Or for DBCA forest blocks
+head(find_block())
 ```
 
 That could take a while. Say we are pretty sure our National park AOI has something 
@@ -105,10 +108,24 @@ find_tenure(like = "wandoo")
 location <- find_tenure(like = "wandoo")[1]
 ```
 
-Now that we have the correct name we can retrieve the tenure boundary and save it 
-as our AOI.
+Alternatively, we might be looking for a forest block called Jasper
+```{r, message=FALSE, warning=FALSE}
+# search for something like jasper
+find_block(like = "jasper")
+
+# there is only one so no need to subset this time
+location <- find_block(like = "jasper")
+```
+
+Now that we have the correct name we can retrieve the DBCA spatial boundary and save it 
+as our AOI. The `DBCA_aoi` function's default behaviour is to return a tenure boundary. 
+For a forest block make sure you add the extra parameter.
 ```{r, eval=FALSE}
+# if the aoi is a tenure location
 aoi <- DBCA_aoi(choice = location)
+
+# if the aoi is a forest block
+aoi <- DBCA_aoi(choice = location, block = TRUE)
 ```
 
 Whichever way you define an AOI these functions will return a list containing 
@@ -120,6 +137,9 @@ After defining the AOI, you use it to subset the downloaded fire history data.
 path <- "C:/somewhere/DBCA_Fire_History_DBCA_060.shp"
 # here we want to temporally restrict it to the period 1988-2022
 wandoo_data <- assemble_data(fire_path = path, from = 1988, to = 2022, aoi = aoi)
+
+# works the same for a forest block
+jasper_data <- assemble_data(fire_path = path, from = 1988, to = 2022, aoi = aoi)
 ```
 
 Whilst the fire history data is huge, as it is subset using the AOI prior 
@@ -127,12 +147,12 @@ to reading into memory, this process is reasonably fast (about 10-20 seconds for
 the wandoo data set). Saving it to an object (here called wandoo_data) is 
 important as this will be passed along to the fire metrics functions. If there is 
 nothing in the fire history for the AOI the function will return an error. The 
-fire history is best on DBCA tenure and generally even better in more populous 
-regions/areas.
+fire history is most complete on DBCA tenure  and forest blocks and generally 
+even better in more populous regions/areas.
 
 ## Fire Metrics
 Now it is time to generate some fire metrics. Here is an example to calculate 
-Year Since Last Burn (YSLB).
+Year Since Last Burn (YSLB) for the Wandoo example above.
 ```{r, eval=FALSE}
 # create YSLB for the Wandoo National Park
 yslb_list <- yslb(data = wandoo_data, products = TRUE)
@@ -140,7 +160,7 @@ yslb_list <- yslb(data = wandoo_data, products = TRUE)
 
 By saving it to an object it creates a list containing:
 
-* A YSLB raster of class terra
+* A YSLB raster of class SpatRaster (from the Terra R package)
 * A YSLB map of class ggplot
 * A tibble of area stats
 * A YSLB column plot of class ggplot
