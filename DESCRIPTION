@@ -23,4 +23,5 @@ Imports:
     rasterVis,
     ggplot2,
     readr,
-    cli
+    cli,
+    magrittr
