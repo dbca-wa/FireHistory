@@ -38,7 +38,7 @@ user_aoi <- function(aoi_path, name){
 
 #' Find a DBCA tenure name
 #'
-#' `find_tenure` helps find the correct tenure name form all of the DBCA estate.
+#' `find_tenure` helps find the correct tenure name from all of the DBCA estate.
 #'
 #' Used with the default parameter, `find_tenure` returns a character vector of
 #' the 1000+ full names of all tenure in the DBCA estate. A character vector can
@@ -48,7 +48,7 @@ user_aoi <- function(aoi_path, name){
 #' @param like default is NULL which returns all DBCA tenure names. Use a
 #' character vector to find matches. Case ambivalent.
 #'
-#' @returns A character vector containg one or many DBCA tenure names.
+#' @returns A character vector containing one or many DBCA tenure names.
 #'
 #'@examples
 #' \dontrun{
@@ -70,13 +70,48 @@ find_tenure <- function(like = NULL){
   }
 }
 
+#' Find a DBCA forest block name
+#'
+#' `find_block` helps find the correct DBCA forest block name.
+#'
+#' Used with the default parameter, `find_block` returns a character vector of
+#' the 400+ full names of all forest blocks in the DBCA estate. A character vector can
+#' be used for a fuzzy search, returning all close matches. Use this function to
+#' obtain the correct search term for [FireHistory::DBCA_aoi()].
+#'
+#' @param like default is NULL which returns all DBCA forest block names. Use a
+#' character vector to find matches. Case ambivalent.
+#'
+#' @returns A character vector containing one or many DBCA forest block names.
+#'
+#'@examples
+#' \dontrun{
+#' all_blocks<- find_block(like = NULL)
+#'
+#' choice <- find_tenure(like = "jasper")
+#' }
+#'
+#' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
+#'
+#' @export
+find_block <- function(like = NULL){
+  if(is.null(like)){
+    return(DBCA_blocks)
+  } else {
+    lc <- tolower(like)
+    result <- DBCA_blocks[grepl(lc, DBCA_blocks, ignore.case = TRUE)]
+    return(result)
+  }
+}
+
 #' Make a DBCA tenure area of interest
 #'
 #' `DBCA_aoi` construct a spatial object from DBCA tenure which will be used to
 #' query the DBCA Fire History dataset.
 #'
-#' @param choice a  character vector of a single DBCA tenure name as determined by
-#' previously running [FireHistory::find_tenure()].
+#' @param choice a character vector of a single DBCA tenure or forest block name
+#' as determined by previously running [FireHistory::find_tenure()] or
+#' [FireHistory::find_block()].
 #'
 #' @returns A named list containing `aoi` (an sf class object) and `aoi_name`
 #' (the tenure name of the aoi).
@@ -88,17 +123,27 @@ find_tenure <- function(like = NULL){
 #'
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
 #'
-#' @importFrom sf st_transform
 #' @importFrom dplyr filter
+#' @importFrom cli cli_alert_danger
 #'
 #' @export
-DBCA_aoi <- function(choice){
-  aoi <- tenure_shp |>
-    sf::st_transform(7844) |>
-    dplyr::filter(LEG_NAME %in% choice)
+DBCA_aoi <- function(choice, block = FALSE){
+  if(block == TRUE){
+    aoi <- blocks_shp %>%
+      dplyr::filter(SFB_BLOCK %in% choice)
+  } else {
+    aoi <- tenure_shp %>%
+      dplyr::filter(LEG_NAME %in% choice)
+  }
+
   aoi_list <- list(aoi = aoi,
                    aoi_name = choice)
-  return(aoi_list)
+  if(dim(aoi_list$aoi)[1] == 0) {
+    cli::cli_alert_danger("Can't find that choice. Is it a forest block?")
+  } else {
+    return(aoi_list)
+    }
+
 }
 
 #' Make well known text string from bounding box of an area of interest
@@ -142,7 +187,7 @@ make_wkt <- function(aoi, fh_crs){
 #' downloaded the Fire History shape file [DBCA_Fire_History_DBCA_060](https://catalogue.data.wa.gov.au/dataset/dbca-fire-history).
 #' The function stores the subset of the Fire History, the aoi and
 #' the aoi name in a named list which will be used by other functions for
-#' calculating various fire metrics. Note all spatial objects have class SpatVector
+#' calculating various fire metrics. Note all spatial objects have class sf
 #' and data is now reprojected to Albers GDA2020 (epsg:9473).
 #'
 #' @param fire_path a character vector of the full file path to the previously
@@ -170,8 +215,7 @@ make_wkt <- function(aoi, fh_crs){
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
 #'
 #' @import sf
-#' @importFrom terra vect
-#' @importFrom cli cli_progress_step
+#' @importFrom cli cli_progress_step cli_alert_danger
 #'
 #' @export
 assemble_data <- function(fire_path, from, to, aoi){
@@ -190,18 +234,24 @@ assemble_data <- function(fire_path, from, to, aoi){
     fh_alb <- fh |>
       dplyr::filter(fih_year1 >= from & fih_year1 <= to) |>
       sf::st_make_valid() |>
-      sf::st_transform(9473) |>
-      terra::vect()
+      sf::st_transform(9473)
     aoi_alb <- aoi[['aoi']] |>
       sf::st_make_valid() |>
-      sf::st_transform(9473) |>
-      terra::vect()
+      sf::st_transform(9473)
     dat_list <- list(fh_alb = fh_alb,
                      aoi_alb = aoi_alb,
                      aoi_name = aoi[['aoi_name']],
                      period = c(from,to))
+    if(dim(fh_alb)[1] != 0) {
+      return(dat_list)
+    } else {
+      cli::cli_alert_danger("There is no fire history data for that location and period")
+      stop("Nothing in that period")
+    }
+
   } else {
-    stop("There is no fire history data for that location")
+    cli::cli_alert_danger("There is no fire history data for that location")
+    stop("Nothing in that location")
   }
-  return(dat_list)
+
 }
