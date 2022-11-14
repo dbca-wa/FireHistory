@@ -26,7 +26,7 @@ obtain the correct search term for \code{\link[=DBCA_aoi]{DBCA_aoi()}}.
 \dontrun{
 all_blocks<- find_block(like = NULL)
 
-choice <- find_tenure(like = "jasper")
+choice <- find_block(like = "jasper")
 }
 
 }
