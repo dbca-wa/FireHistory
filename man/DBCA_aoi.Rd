@@ -4,11 +4,12 @@
 \alias{DBCA_aoi}
 \title{Make a DBCA tenure area of interest}
 \usage{
-DBCA_aoi(choice)
+DBCA_aoi(choice, block = FALSE)
 }
 \arguments{
-\item{choice}{a  character vector of a single DBCA tenure name as determined by
-previously running \code{\link[=find_tenure]{find_tenure()}}.}
+\item{choice}{a character vector of a single DBCA tenure or forest block name
+as determined by previously running \code{\link[=find_tenure]{find_tenure()}} or
+\code{\link[=find_block]{find_block()}}.}
 }
 \value{
 A named list containing \code{aoi} (an sf class object) and \code{aoi_name}
