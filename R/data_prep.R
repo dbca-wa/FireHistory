@@ -89,7 +89,7 @@ find_tenure <- function(like = NULL){
 #' \dontrun{
 #' all_blocks<- find_block(like = NULL)
 #'
-#' choice <- find_tenure(like = "jasper")
+#' choice <- find_block(like = "jasper")
 #' }
 #'
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
