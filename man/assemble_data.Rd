@@ -37,7 +37,7 @@ file only those polygons that intersect the aoi. The user must have previously
 downloaded the Fire History shape file \href{https://catalogue.data.wa.gov.au/dataset/dbca-fire-history}{DBCA_Fire_History_DBCA_060}.
 The function stores the subset of the Fire History, the aoi and
 the aoi name in a named list which will be used by other functions for
-calculating various fire metrics. Note all spatial objects have class SpatVector
+calculating various fire metrics. Note all spatial objects have class sf
 and data is now reprojected to Albers GDA2020 (epsg:9473).
 }
 \examples{
