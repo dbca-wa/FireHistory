@@ -11,10 +11,10 @@ find_tenure(like = NULL)
 character vector to find matches. Case ambivalent.}
 }
 \value{
-A character vector containg one or many DBCA tenure names.
+A character vector containing one or many DBCA tenure names.
 }
 \description{
-\code{find_tenure} helps find the correct tenure name form all of the DBCA estate.
+\code{find_tenure} helps find the correct tenure name from all of the DBCA estate.
 }
 \details{
 Used with the default parameter, \code{find_tenure} returns a character vector of
