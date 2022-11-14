@@ -25,11 +25,12 @@
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
 #'
 #' @import sf
+#' @importFrom magrittr %>%
 #'
 #' @export
 user_aoi <- function(aoi_path, name){
-  shp <- sf::st_read(dsn = aoi_path, quiet = TRUE)|>
-    sf::st_make_valid() |>
+  shp <- sf::st_read(dsn = aoi_path, quiet = TRUE) %>%
+    sf::st_make_valid() %>%
     sf::st_transform(7844)
   aoi_list <- list(aoi = shp,
                    aoi_name = name)
@@ -125,6 +126,7 @@ find_block <- function(like = NULL){
 #'
 #' @importFrom dplyr filter
 #' @importFrom cli cli_alert_danger
+#' @importFrom magrittr %>%
 #'
 #' @export
 DBCA_aoi <- function(choice, block = FALSE){
@@ -168,11 +170,12 @@ DBCA_aoi <- function(choice, block = FALSE){
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
 #'
 #' @import sf
+#' @importFrom magrittr %>%
 make_wkt <- function(aoi, fh_crs){
-  aoi_wkt <- sf::st_transform(aoi[['aoi']], fh_crs) |>
-    sf::st_bbox() |>
-    sf::st_as_sfc() |>
-    sf::st_geometry() |>
+  aoi_wkt <- sf::st_transform(aoi[['aoi']], fh_crs) %>%
+    sf::st_bbox() %>%
+    sf::st_as_sfc() %>%
+    sf::st_geometry() %>%
     sf::st_as_text()
   return(aoi_wkt)
 }
@@ -216,6 +219,7 @@ make_wkt <- function(aoi, fh_crs){
 #'
 #' @import sf
 #' @importFrom cli cli_progress_step cli_alert_danger
+#' @importFrom magrittr %>%
 #'
 #' @export
 assemble_data <- function(fire_path, from, to, aoi){
@@ -231,12 +235,12 @@ assemble_data <- function(fire_path, from, to, aoi){
   fh <- sf::st_read(dsn = fire_path, quiet = TRUE, wkt_filter = wkt_flt)
   names(fh) <- tolower(names(fh))
   if(dim(fh)[1] != 0){
-    fh_alb <- fh |>
-      dplyr::filter(fih_year1 >= from & fih_year1 <= to) |>
-      sf::st_make_valid() |>
+    fh_alb <- fh %>%
+      dplyr::filter(fih_year1 >= from & fih_year1 <= to) %>%
+      sf::st_make_valid() %>%
       sf::st_transform(9473)
-    aoi_alb <- aoi[['aoi']] |>
-      sf::st_make_valid() |>
+    aoi_alb <- aoi[['aoi']] %>%
+      sf::st_make_valid() %>%
       sf::st_transform(9473)
     dat_list <- list(fh_alb = fh_alb,
                      aoi_alb = aoi_alb,
