@@ -1,6 +1,6 @@
 Package: FireHistory
 Title: Tools to aid querying DBCA fire history data
-Version: 0.0.0.9000
+Version: 0.0.1.0
 Authors@R: c(
     person("Bart", "Huntley", email = "bart.huntley@dbca.wa.gov.au",
       role = c("aut", "cre", "prg", "res"),
@@ -18,7 +18,6 @@ Depends:
     R (>= 4.1.0)
 Imports: 
     dplyr,
-    terra,
     sf,
     snakecase,
     rasterVis,
