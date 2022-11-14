@@ -54,7 +54,7 @@ yslb <- function(data, products = TRUE){
   name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
                  data[["period"]][1], "-", data[["period"]][2], "_")
   # map
-  yslb_map <- gplot(yslb) +
+  yslb_map <- rasterVis::gplot(yslb) +
     geom_tile(aes(fill = value)) +
     scale_fill_viridis_c(na.value = "transparent", name = "yslb") +
     labs(x = "",
@@ -143,7 +143,7 @@ fire_freq <- function(data, products = TRUE){
   name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
                  data[["period"]][1], "-", data[["period"]][2], "_")
   # map
-  freq_map <- gplot(fire_frq) +
+  freq_map <- rasterVis::gplot(fire_frq) +
     geom_tile(aes(fill = value)) +
     scale_fill_viridis_c(na.value = "transparent", name = "Fire Frequency") +
     labs(x = "",
