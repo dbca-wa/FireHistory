@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">FireHistory</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.0</span>
       </span>
     </div>
 
@@ -44,6 +44,9 @@
 </li>
 <li>
   <a href="../articles/index.html">Articles</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -105,7 +108,7 @@ requirement is for statistics only. Once logged in you will have the
 ability to download the data in two different Datums. Please choose the
 GDA2020 version.</p>
 <p>At time of writing the download was 939MB and should take a few
-minutes depending on connection speeds. Make sure you save it somewher
+minutes depending on connection speeds. Make sure you save it somewhere
 locally on your computer and remember how to get to it.</p>
 <p>While on the data WA website, also click on the
 <code>Resources</code> drop down menu and download the PDF of “Look-up
@@ -145,20 +148,25 @@ together it makes sense. The parameter <code>name</code> should be
 something helpful as all your products and plots will feature this.</p>
 </div>
 <div class="section level3">
-<h3 id="dbca-tenure-aoi">DBCA tenure AOI<a class="anchor" aria-label="anchor" href="#dbca-tenure-aoi"></a>
+<h3 id="dbca-tenure-or-forest-block-aoi">DBCA tenure or forest block AOI<a class="anchor" aria-label="anchor" href="#dbca-tenure-or-forest-block-aoi"></a>
 </h3>
-<p>Want to use a National Park boundary as the AOI but don’t know how to
-get it it what it’s full name is? No problems. The package ships with a
-complete listing of tenure names as well as their boundaries.</p>
+<p>Want to use a National Park boundary or a forest block as the AOI but
+don’t know how to get it or what it’s full name is? No problems. The
+package ships with a complete listing of tenure and forest block names
+as well as their boundaries.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># have a look at the first few records....there's 1000+</span></span>
+<code class="sourceCode R"><span><span class="co"># For DBCA tenure - have a look at the first few records....there's 1000+</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/find_tenure.html">find_tenure</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Highbury Nature Reserve"             </span></span>
 <span><span class="co">#&gt; [2] "Badgingarra National Park"           </span></span>
 <span><span class="co">#&gt; [3] "Dwellingup State Forest"             </span></span>
 <span><span class="co">#&gt; [4] "Karnet Nature Reserve"               </span></span>
 <span><span class="co">#&gt; [5] "Myalup State Forest"                 </span></span>
-<span><span class="co">#&gt; [6] "Recherche Archipelago Nature Reserve"</span></span></code></pre></div>
+<span><span class="co">#&gt; [6] "Recherche Archipelago Nature Reserve"</span></span>
+<span></span>
+<span><span class="co"># Or for DBCA forest blocks</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/find_block.html">find_block</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "CORNWALL"  "STOATE"    "GERVASSE"  "CATTERICK" "JASPER"    "TALLING"</span></span></code></pre></div>
 <p>That could take a while. Say we are pretty sure our National park AOI
 has something to do with wandoo.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -168,39 +176,58 @@ has something to do with wandoo.</p>
 <span></span>
 <span><span class="co"># there are a few close matches but we want the first one and save it to an object</span></span>
 <span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_tenure.html">find_tenure</a></span><span class="op">(</span>like <span class="op">=</span> <span class="st">"wandoo"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
-<p>Now that we have the correct name we can retrieve the tenure boundary
-and save it as our AOI.</p>
+<p>Alternatively, we might be looking for a forest block called
+Jasper</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DBCA_aoi.html">DBCA_aoi</a></span><span class="op">(</span>choice <span class="op">=</span> <span class="va">location</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># search for something like jasper</span></span>
+<span><span class="fu"><a href="../reference/find_block.html">find_block</a></span><span class="op">(</span>like <span class="op">=</span> <span class="st">"jasper"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "JASPER"</span></span>
+<span></span>
+<span><span class="co"># there is only one so no need to subset this time</span></span>
+<span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/find_block.html">find_block</a></span><span class="op">(</span>like <span class="op">=</span> <span class="st">"jasper"</span><span class="op">)</span></span></code></pre></div>
+<p>Now that we have the correct name we can retrieve the DBCA spatial
+boundary and save it as our AOI. The <code>DBCA_aoi</code> function’s
+default behaviour is to return a tenure boundary. For a forest block
+make sure you add the extra parameter.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># if the aoi is a tenure location</span></span>
+<span><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DBCA_aoi.html">DBCA_aoi</a></span><span class="op">(</span>choice <span class="op">=</span> <span class="va">location</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># if the aoi is a forest block</span></span>
+<span><span class="va">aoi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DBCA_aoi.html">DBCA_aoi</a></span><span class="op">(</span>choice <span class="op">=</span> <span class="va">location</span>, block <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Whichever way you define an AOI these functions will return a list
 containing a spatial object and its name.</p>
 <p>After defining the AOI, you use it to subset the downloaded fire
 history data.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># file path to the fire history data - note includes the file extension</span></span>
 <span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"C:/somewhere/DBCA_Fire_History_DBCA_060.shp"</span></span>
 <span><span class="co"># here we want to temporally restrict it to the period 1988-2022</span></span>
-<span><span class="va">wandoo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, from <span class="op">=</span> <span class="fl">1988</span>, to <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">wandoo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, from <span class="op">=</span> <span class="fl">1988</span>, to <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># works the same for a forest block</span></span>
+<span><span class="va">jasper_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, from <span class="op">=</span> <span class="fl">1988</span>, to <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span><span class="op">)</span></span></code></pre></div>
 <p>Whilst the fire history data is huge, as it is subset using the AOI
 prior to reading into memory, this process is reasonably fast (about
 10-20 seconds for the wandoo data set). Saving it to an object (here
 called wandoo_data) is important as this will be passed along to the
 fire metrics functions. If there is nothing in the fire history for the
-AOI the function will return an error. The fire history is best on DBCA
-tenure and generally even better in more populous regions/areas.</p>
+AOI the function will return an error. The fire history is most complete
+on DBCA tenure and forest blocks and generally even better in more
+populous regions/areas.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="fire-metrics">Fire Metrics<a class="anchor" aria-label="anchor" href="#fire-metrics"></a>
 </h2>
 <p>Now it is time to generate some fire metrics. Here is an example to
-calculate Year Since Last Burn (YSLB).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+calculate Year Since Last Burn (YSLB) for the Wandoo example above.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create YSLB for the Wandoo National Park</span></span>
 <span><span class="va">yslb_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/yslb.html">yslb</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">wandoo_data</span>, products <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>By saving it to an object it creates a list containing:</p>
 <ul>
-<li>A YSLB raster of class terra</li>
+<li>A YSLB raster of class SpatRaster (from the Terra R package)</li>
 <li>A YSLB map of class ggplot</li>
 <li>A tibble of area stats</li>
 <li>A YSLB column plot of class ggplot</li>

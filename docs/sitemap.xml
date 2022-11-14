@@ -19,10 +19,16 @@
     <loc>https://bartesto.github.io/FireHistory/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>https://bartesto.github.io/FireHistory/news/index.html</loc>
+  </url>
+  <url>
     <loc>https://bartesto.github.io/FireHistory/reference/assemble_data.html</loc>
   </url>
   <url>
     <loc>https://bartesto.github.io/FireHistory/reference/DBCA_aoi.html</loc>
+  </url>
+  <url>
+    <loc>https://bartesto.github.io/FireHistory/reference/find_block.html</loc>
   </url>
   <url>
     <loc>https://bartesto.github.io/FireHistory/reference/find_tenure.html</loc>
@@ -35,6 +41,9 @@
   </url>
   <url>
     <loc>https://bartesto.github.io/FireHistory/reference/make_wkt.html</loc>
+  </url>
+  <url>
+    <loc>https://bartesto.github.io/FireHistory/reference/pipe.html</loc>
   </url>
   <url>
     <loc>https://bartesto.github.io/FireHistory/reference/user_aoi.html</loc>

@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   one: one.html
-last_built: 2022-10-20T06:22Z
+last_built: 2022-11-14T03:36Z
 urls:
   reference: https://bartesto.github.io/FireHistory/reference
   article: https://bartesto.github.io/FireHistory/articles
