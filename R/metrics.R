@@ -34,6 +34,7 @@
 #' @importFrom snakecase to_parsed_case to_mixed_case
 #' @importFrom rasterVis gplot
 #' @import ggplot2
+#' @importFrom cli cli_progress_step
 #' @importFrom dplyr as_tibble mutate rename select
 #' @importFrom readr write_csv
 #' @importFrom magrittr %>%
@@ -41,6 +42,7 @@
 #' @export
 yslb <- function(data, products = TRUE){
   # yslb
+  cli::cli_progress_step("Calculating YSLB")
   template <- terra::rast(data[["aoi_alb"]], res = 30)
   yr_rst <- terra::rasterize(data[["fh_alb"]], template,
                              field = "fih_year1", fun = "max")
@@ -49,6 +51,7 @@ yslb <- function(data, products = TRUE){
   current <- max(data[["fh_alb"]]$fih_year1)
   yslb <- current - yr_crp
   # products
+  cli::cli_progress_step("Organising products")
   # folder
   if(!dir.exists("outputs")){dir.create("outputs")}
   # naming
@@ -128,12 +131,15 @@ yslb <- function(data, products = TRUE){
 #' @importFrom snakecase to_parsed_case to_mixed_case
 #' @importFrom rasterVis gplot
 #' @import ggplot2
+#' @importFrom cli cli_progress_step
 #' @importFrom dplyr as_tibble mutate rename select
 #' @importFrom readr write_csv
 #' @importFrom magrittr %>%
 #'
 #' @export
 fire_freq <- function(data, products = TRUE){
+  # fire freq
+  cli::cli_progress_step("Calculating fire frequency")
   template <- terra::rast(data[["aoi_alb"]], res = 30)
   data[["fh_alb"]]$n <- 1
   frq_rst <- terra::rasterize(data[["fh_alb"]], template,
@@ -142,6 +148,7 @@ fire_freq <- function(data, products = TRUE){
                           data[["aoi_alb"]])
 
   # products
+  cli::cli_progress_step("Organising products")
   # folder
   if(!dir.exists("outputs")){dir.create("outputs")}
   # naming
