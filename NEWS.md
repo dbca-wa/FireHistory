@@ -4,6 +4,8 @@
 measures, including minimum, maximum and mean intervals.
 * Raster products written to file now can be added to GIS software and the crs 
 system will be recognised without further work. 
+* Addressed issue where `fire_freq` was not cropping and masking raster output to 
+aoi.
 
 # FireHistory 0.0.1.0
 
