@@ -138,7 +138,8 @@ fire_freq <- function(data, products = TRUE){
   data[["fh_alb"]]$n <- 1
   frq_rst <- terra::rasterize(data[["fh_alb"]], template,
                               field = "n", sum = TRUE)
-  fire_frq <- terra::crop(frq_rst, data[["aoi_alb"]], mask = TRUE)
+  fire_frq <- terra::crop(terra::mask(frq_rst, mask = data[["aoi_alb"]]),
+                          data[["aoi_alb"]])
 
   # products
   # folder
