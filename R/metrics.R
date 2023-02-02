@@ -85,8 +85,8 @@ yslb <- function(data, products = TRUE){
     # terra::writeRaster(yslb, paste0("./outputs/", name, "YSLB.tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(yslb), paste0("./outputs/", name, "YSLB.tif"))
-    ggsave(filename = paste0("./outputs/", name, "YSLB_map.png"), yslb_map)
-    ggsave(filename = paste0("./outputs/", name, "YSLB_plot.png"), yslb_plot)
+    supressMessages(ggsave(filename = paste0("./outputs/", name, "YSLB_map.png"), yslb_map))
+    supressMessages(ggsave(filename = paste0("./outputs/", name, "YSLB_plot.png"), yslb_plot))
     readr::write_csv(yslb_stats, paste0("./outputs/", name, "YSLB_stats.csv"))
   }
   return(yslb_list)
@@ -178,8 +178,8 @@ fire_freq <- function(data, products = TRUE){
     # terra::writeRaster(fire_frq, paste0("./outputs/", name, "FFREQ.tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(fire_frq), paste0("./outputs/", name, "FFREQ.tif"))
-    ggsave(filename = paste0("./outputs/", name, "FFREQ_map.png"), freq_map)
-    ggsave(filename = paste0("./outputs/", name, "FFREQ_plot.png"), freq_plot)
+    supressMessages(ggsave(filename = paste0("./outputs/", name, "FFREQ_map.png"), freq_map))
+    supressMessages(ggsave(filename = paste0("./outputs/", name, "FFREQ_plot.png"), freq_plot))
     readr::write_csv(freq_stats, paste0("./outputs/", name, "FFREQ_stats.csv"))
   }
   return(freq_list)
@@ -257,11 +257,13 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
 
   ## create earliest layer for stack
   cli::cli_progress_step("Stacking fires")
-  rst1 <- fh_dat %>%
-    dplyr::filter(fih_year1 == yrs[1]) %>%
-    dplyr::mutate(n = 1) %>%
-    sf::st_crop(blnk_rst) %>%
-    terra::vect()
+  suppressWarnings(
+    rst1 <- fh_dat %>%
+      dplyr::filter(fih_year1 == yrs[1]) %>%
+      dplyr::mutate(n = 1) %>%
+      sf::st_crop(blnk_rst) %>%
+      terra::vect()
+    )
 
   # catch if 1st year no fire
   if(dim(rst1)[1] == 0){
@@ -277,11 +279,15 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
   ## create all other layers for stack
   for(i in 2:length(yrs)){
     yr <- yrs[i]
-    rst <- fh_dat %>%
-      dplyr::filter(fih_year1 == yr) %>%
-      dplyr::mutate(n = 1) %>%
-      sf::st_crop(blnk_rst_mskd) %>%
-      terra::vect()
+
+    suppressWarnings(
+      rst <- fh_dat %>%
+        dplyr::filter(fih_year1 == yr) %>%
+        dplyr::mutate(n = 1) %>%
+        sf::st_crop(blnk_rst_mskd) %>%
+        terra::vect()
+      )
+
     if(dim(rst)[1] == 0){
       rst_out <- blnk_rst_mskd
     } else {
@@ -391,7 +397,7 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
     # terra::writeRaster(int_dat, paste0("./outputs/", name, ".tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(int_dat), paste0("./outputs/", name, ".tif"))
-    ggsave(filename = paste0("./outputs/", name, "_map.png"), int_map)
+    supressMessages(ggsave(filename = paste0("./outputs/", name, "_map.png"), int_map))
     readr::write_csv(int_stats, paste0("./outputs/", name, "_stats.csv"))
   }
   return(int_list)
