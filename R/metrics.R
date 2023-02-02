@@ -229,7 +229,7 @@ fire_freq <- function(data, products = TRUE){
 #' @importFrom readr write_csv
 #' @importFrom magrittr %>%
 #' @importFrom cli cli_progress_step
-#' @importFrom sf crop
+#' @importFrom sf st_crop
 #' @importFrom stars st_as_stars st_apply
 #' @importFrom rlang as_name
 #' @importFrom raster writeRaster raster
