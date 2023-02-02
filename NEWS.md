@@ -1,3 +1,10 @@
+# FireHistory 0.0.2.0
+
+* Package now includes`fire_interval`, a package to calculate a variety of fire interval 
+measures, including minimum, maximum and mean intervals.
+* Raster products written to file now can be added to GIS software and the crs 
+system will be recognised without further work. 
+
 # FireHistory 0.0.1.0
 
 * Added a `NEWS.md` file to track changes to the package.
