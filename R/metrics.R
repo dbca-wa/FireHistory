@@ -183,3 +183,215 @@ fire_freq <- function(data, products = TRUE){
   }
   return(freq_list)
 }
+
+#' Metric - Fire Interval
+#'
+#' `fire_interval` calculates  fire interval metrics from the data stored
+#' in the list constructed from the [FireHistory::assemble_data()] function.
+#'
+#' The function calculates fire intervals both spatially and as area statements
+#' for the area of interest (aoi) and for the time period defined in the previously
+#' constructed data list. The user has a choice of one of 3 interval measures to
+#' choose from. The minimum ("min"), the maximum ("max") or the mean ("mean").
+#'
+#' The function will create a list object containing four
+#' items:
+#'
+#' * A fire interval raster object of the chosen measure (class SpatRaster)
+#' * A ggplot object of a 'map' showing the fire interval raster of the chosen measure
+#' * A data frame of fire interval area stats of the chosen measure
+#' * A character vector of the user specified measure
+#'
+#' Using default parameters, the function also outputs the first three items to a
+#' created folder ("outputs") in the working directory. All outputs are named by
+#' aoi and time period to differentiate products. Note the fire interval raster
+#' and product are projected to Albers GDA2020 (epsg:9473).
+#'
+#' @inheritParams yslb
+#' @param measure a character indicating which fire interval measure to calculate.
+#' Can be one of "min" for minimum, "max" for maximum or "mean" for mean.
+#'
+#' @returns A list containing four fire interval products and if
+#' `products = TRUE` a folder containing three rendered products.
+#'
+#' @examples
+#' \dontrun{
+#' finterval_list <- fire_interval(data = data_list, measure = "min", products = TRUE)
+#' }
+#'
+#' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
+#'
+#' @import terra
+#' @import ggplot2
+#' @importFrom snakecase to_parsed_case to_mixed_case
+#' @importFrom rasterVis gplot
+#' @importFrom dplyr as_tibble mutate rename select filter
+#' @importFrom readr write_csv
+#' @importFrom magrittr %>%
+#' @importFrom cli cli_progress_step
+#' @importFrom sf crop
+#' @importFrom stars st_as_stars st_apply
+#' @importFrom rlang as_name
+#' @importFrom raster writeRaster raster
+#'
+#' @export
+fire_interval <- function(data, measure = c("min", "max", "mean"), products = TRUE){
+  # aoi vector
+  aoi_dat <- data[["aoi_alb"]]
+
+  # fh vector
+  fh_dat <- data[["fh_alb"]]
+
+  # extent raster and stack filler for 0 fires in year
+  blnk_rst <- terra::rast(terra::ext(aoi_dat), res = c(30,30), crs = "EPSG:9473")
+  blnk_rst[] <- 0
+  blnk_rst_mskd <- blnk_rst %>%
+    terra::mask(terra::vect(aoi_dat))
+
+  # intended period of search
+  yrs <- data$period[1]:data$period[2]
+
+  # measure
+  measure <- tolower(measure)
+
+  ## create earliest layer for stack
+  cli::cli_progress_step("Stacking fires")
+  rst1 <- fh_dat %>%
+    dplyr::filter(fih_year1 == yrs[1]) %>%
+    dplyr::mutate(n = 1) %>%
+    sf::st_crop(blnk_rst) %>%
+    terra::vect()
+
+  # catch if 1st year no fire
+  if(dim(rst1)[1] == 0){
+    rst_stck <- blnk_rst_mskd
+  } else {
+    rst_stck <- terra::rasterize(rst1, blnk_rst_mskd, field = "n", fun = "first", background = NA_real_)
+    rst_stck[is.na(rst_stck)] <- 0
+  }
+
+  # name layer
+  names(rst_stck) <- yrs[1]
+
+  ## create all other layers for stack
+  for(i in 2:length(yrs)){
+    yr <- yrs[i]
+    rst <- fh_dat %>%
+      dplyr::filter(fih_year1 == yr) %>%
+      dplyr::mutate(n = 1) %>%
+      sf::st_crop(blnk_rst_mskd) %>%
+      terra::vect()
+    if(dim(rst)[1] == 0){
+      rst_out <- blnk_rst_mskd
+    } else {
+      rst_out <- terra::rasterize(rst, blnk_rst_mskd, field = "n", fun = "first", background = NA_real_)
+      rst_out[is.na(rst_out)] <- 0
+    }
+
+    # name layer
+    names(rst_out) <- yrs[i]
+
+    # add to stack
+    rst_stck <- c(rst_stck, rst_out)
+  }
+
+  # mask stack to aoi
+  rst_stck_mskd <- rst_stck %>%
+    terra::mask(terra::vect(aoi_dat))
+
+  # functions for measures
+  max_int <- function(x){
+    if(all(is.na(x))){
+      NA
+    } else {
+      seq <- rle(as.numeric(x))
+      out <- max(seq$lengths[seq$values == 0])
+      return(out)
+    }
+  }
+  mean_int <- function(x){
+    if(all(is.na(x))){
+      NA
+    } else {
+      seq <- rle(as.numeric(x))
+      out <- mean(seq$lengths[seq$values == 0])
+      return(out)
+    }
+  }
+  min_int <- function(x){
+    if(all(is.na(x))){
+      NA
+    } else {
+      seq <- rle(as.numeric(x))
+      out <- min(seq$lengths[seq$values == 0])
+      return(out)
+    }
+  }
+
+  # convert to stars object to minimise calc times
+  stars_stck_mskd <- stars::st_as_stars(rst_stck_mskd)
+
+  # calculate measure
+  if(measure == "max"){
+    cli::cli_progress_step("Calculating maximum interval")
+    int_dat <- stars::st_apply(stars_stck_mskd, MARGIN = 1:2, FUN = max_int) %>%
+      terra::rast()
+  } else {
+    if(measure == "mean"){
+      cli::cli_progress_step("Calculating mean interval")
+      int_dat <- stars::st_apply(stars_stck_mskd, MARGIN = 1:2, FUN = mean_int) %>%
+        terra::rast()
+    } else {
+      if(measure == "min"){
+        cli::cli_progress_step("Calculating minimum interval")
+        int_dat <- stars::st_apply(stars_stck_mskd, MARGIN = 1:2, FUN = min_int) %>%
+          terra::rast()
+      } else {
+        cli::cli_alert_danger("That measure is not supported. Choose either 'max', 'mean' or 'min'.")
+        stop("Choose another measure")
+      }
+    }
+  }
+
+  ## products
+  cli::cli_progress_step("Organising products")
+  # folder
+  if(!dir.exists("outputs")){dir.create("outputs")}
+  # naming
+  name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
+                 data[["period"]][1], "-", data[["period"]][2], "_",
+                 measure, "FireInterval")
+
+  # map
+  int_map <- rasterVis::gplot(int_dat) +
+    geom_tile(aes(fill = value)) +
+    scale_fill_viridis_c(na.value = "transparent", name = paste(measure, "\nFire Interval")) +
+    labs(x = "",
+         y = "",
+         title = snakecase::to_mixed_case(name, sep_out = " "),
+         caption = expression(italic("Data: DBCA_Fire_History_DBCA_060"))) +
+    coord_equal() +
+    theme_bw()
+
+  # stats
+  rname <- rlang::as_name(measure)
+  int_stats <- dplyr::as_tibble(terra::freq(int_dat)) %>%
+    dplyr::mutate(area_ha = count * 0.09) %>%
+    dplyr::rename(!!rname:= value) %>%
+    dplyr::select(-layer, -count)
+
+  # output list
+  int_list <- list(interval = int_dat,
+                   interval_map = int_map,
+                   interval_stats = int_stats,
+                   interval_measure = measure)
+
+  if(products == TRUE){
+    # terra::writeRaster(int_dat, paste0("./outputs/", name, ".tif"))
+    # raster work around to get geotiff playing nicely in ArcMAP
+    raster::writeRaster(raster::raster(int_dat), paste0("./outputs/", name, ".tif"))
+    ggsave(filename = paste0("./outputs/", name, "_map.png"), int_map)
+    readr::write_csv(int_stats, paste0("./outputs/", name, "_stats.csv"))
+  }
+  return(int_list)
+}
