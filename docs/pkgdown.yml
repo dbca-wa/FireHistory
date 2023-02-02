@@ -1,9 +1,9 @@
-pandoc: '2.18'
+pandoc: 2.19.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   one: one.html
-last_built: 2022-11-14T03:52Z
+last_built: 2023-02-02T05:54Z
 urls:
   reference: https://bartesto.github.io/FireHistory/reference
   article: https://bartesto.github.io/FireHistory/articles
