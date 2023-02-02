@@ -28,5 +28,6 @@ reference:
     contents:
       - yslb
       - fire_freq
+      - fire_interval
 
 url: https://bartesto.github.io/FireHistory
