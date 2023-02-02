@@ -88,8 +88,8 @@ yslb <- function(data, products = TRUE){
     # terra::writeRaster(yslb, paste0("./outputs/", name, "YSLB.tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(yslb), paste0("./outputs/", name, "YSLB.tif"))
-    supressMessages(ggsave(filename = paste0("./outputs/", name, "YSLB_map.png"), yslb_map))
-    supressMessages(ggsave(filename = paste0("./outputs/", name, "YSLB_plot.png"), yslb_plot))
+    suppressMessages(ggsave(filename = paste0("./outputs/", name, "YSLB_map.png"), yslb_map))
+    suppressMessages(ggsave(filename = paste0("./outputs/", name, "YSLB_plot.png"), yslb_plot))
     readr::write_csv(yslb_stats, paste0("./outputs/", name, "YSLB_stats.csv"))
   }
   return(yslb_list)
@@ -185,8 +185,8 @@ fire_freq <- function(data, products = TRUE){
     # terra::writeRaster(fire_frq, paste0("./outputs/", name, "FFREQ.tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(fire_frq), paste0("./outputs/", name, "FFREQ.tif"))
-    supressMessages(ggsave(filename = paste0("./outputs/", name, "FFREQ_map.png"), freq_map))
-    supressMessages(ggsave(filename = paste0("./outputs/", name, "FFREQ_plot.png"), freq_plot))
+    suppressMessages(ggsave(filename = paste0("./outputs/", name, "FFREQ_map.png"), freq_map))
+    suppressMessages(ggsave(filename = paste0("./outputs/", name, "FFREQ_plot.png"), freq_plot))
     readr::write_csv(freq_stats, paste0("./outputs/", name, "FFREQ_stats.csv"))
   }
   return(freq_list)
@@ -404,7 +404,7 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
     # terra::writeRaster(int_dat, paste0("./outputs/", name, ".tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(int_dat), paste0("./outputs/", name, ".tif"))
-    supressMessages(ggsave(filename = paste0("./outputs/", name, "_map.png"), int_map))
+    suppressMessages(ggsave(filename = paste0("./outputs/", name, "_map.png"), int_map))
     readr::write_csv(int_stats, paste0("./outputs/", name, "_stats.csv"))
   }
   return(int_list)
