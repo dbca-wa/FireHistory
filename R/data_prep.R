@@ -211,7 +211,7 @@ make_wkt <- function(aoi, fh_crs){
 #'
 #' @examples
 #' \dontrun{
-#' fie_data <- assemble_data(fire_path = "C:/path/to/data/DBCA_Fire_History_DBCA_060.shp",
+#' fire_data <- assemble_data(fire_path = "C:/path/to/data/DBCA_Fire_History_DBCA_060.shp",
 #' from = 1988, to = 2022, aoi = aoi)
 #' }
 #'

@@ -42,7 +42,7 @@ and data is now reprojected to Albers GDA2020 (epsg:9473).
 }
 \examples{
 \dontrun{
-fie_data <- assemble_data(fire_path = "C:/path/to/data/DBCA_Fire_History_DBCA_060.shp",
+fire_data <- assemble_data(fire_path = "C:/path/to/data/DBCA_Fire_History_DBCA_060.shp",
 from = 1988, to = 2022, aoi = aoi)
 }
 
