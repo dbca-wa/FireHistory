@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 [![Last-changedate](https://img.shields.io/github/last-commit/dbca-wa/FireHistory.svg)](https://github.com/dbca-wa/FireHistory/commits/master)
 [![Github top language](https://img.shields.io/github/languages/top/dbca-wa/FireHistory.svg)](https://github.com/dbca-wa/FireHistory/)
 [![R-CMD-check](https://github.com/dbca-wa/dbca-wa/FireHistory/R-CMD-check/badge.svg)](https://github.com/dbca-wa/FireHistory/actions)
+[![DOI](https://zenodo.org/badge/529086399.svg)](https://zenodo.org/badge/latestdoi/529086399)
 <!-- badges: end -->
 
 The goal of FireHistory is to provide tools to help extract useful fire metrics 

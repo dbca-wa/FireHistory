@@ -14,6 +14,7 @@ issues](https://img.shields.io/github/issues/dbca-wa/FireHistory.svg?style=popou
 [![Github top
 language](https://img.shields.io/github/languages/top/dbca-wa/FireHistory.svg)](https://github.com/dbca-wa/FireHistory/)
 [![R-CMD-check](https://github.com/dbca-wa/dbca-wa/FireHistory/R-CMD-check/badge.svg)](https://github.com/dbca-wa/FireHistory/actions)
+[![DOI](https://zenodo.org/badge/529086399.svg)](https://zenodo.org/badge/latestdoi/529086399)
 <!-- badges: end -->
 
 The goal of FireHistory is to provide tools to help extract useful fire
