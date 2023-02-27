@@ -60,7 +60,7 @@ install the package from the GitHub repository. If you haven't already installed
 R package `devtools` you will need to do this first. 
 ```{r, eval=FALSE}
 # install.packages("devtools")
-devtools::install_github("Bartesto/FireHistory")
+devtools::install_github("dbca-wa/FireHistory")
 library(FireHistory)
 ```
 

@@ -3,8 +3,8 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   one: one.html
-last_built: 2023-02-02T07:12Z
+last_built: 2023-02-27T01:29Z
 urls:
-  reference: https://bartesto.github.io/FireHistory/reference
-  article: https://bartesto.github.io/FireHistory/articles
+  reference: https://dbca-wa.github.io/FireHistory/reference
+  article: https://dbca-wa.github.io/FireHistory/articles
 

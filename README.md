@@ -9,11 +9,11 @@
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![GitHub
-issues](https://img.shields.io/github/issues/Bartesto/FireHistory.svg?style=popout)](https://github.com/Bartesto/FireHistory/issues/)
-[![Last-changedate](https://img.shields.io/github/last-commit/Bartesto/FireHistory.svg)](https://github.com/Bartesto/FireHistory/commits/master)
+issues](https://img.shields.io/github/issues/dbca-wa/FireHistory.svg?style=popout)](https://github.com/dbca-wa/FireHistory/issues/)
+[![Last-changedate](https://img.shields.io/github/last-commit/dbca-wa/FireHistory.svg)](https://github.com/dbca-wa/FireHistory/commits/master)
 [![Github top
-language](https://img.shields.io/github/languages/top/Bartesto/FireHistory.svg)](https://github.com/Bartesto/FireHistory/)
-[![R-CMD-check](https://github.com/dbca-wa/Bartesto/FireHistory/R-CMD-check/badge.svg)](https://github.com/Bartesto/FireHistory/actions)
+language](https://img.shields.io/github/languages/top/dbca-wa/FireHistory.svg)](https://github.com/dbca-wa/FireHistory/)
+[![R-CMD-check](https://github.com/dbca-wa/dbca-wa/FireHistory/R-CMD-check/badge.svg)](https://github.com/dbca-wa/FireHistory/actions)
 <!-- badges: end -->
 
 The goal of FireHistory is to provide tools to help extract useful fire
@@ -28,7 +28,7 @@ You can install the development version of FireHistory from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Bartesto/FireHistory")
+devtools::install_github("dbca-wa/FireHistory")
 ```
 
 ## Help Files
@@ -36,4 +36,4 @@ devtools::install_github("Bartesto/FireHistory")
 All functions within FireHistory have the usual R help files, however
 the best place to see these and some helpful articles describing the
 intended workflow is the [FireHistory
-website](https://bartesto.github.io/FireHistory/index.html)
+website](https://dbca-wa.github.io/FireHistory/index.html)
