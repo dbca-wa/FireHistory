@@ -57,8 +57,7 @@ yslb <- function(data, products = TRUE){
   yslb <- current - yr_crp
   # products
   cli::cli_progress_step("Organising products")
-  # folder
-  if(!dir.exists("outputs")){dir.create("outputs")}
+
   # naming
   name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
                  data[["period"]][1], "-", data[["period"]][2], "_")
@@ -90,6 +89,8 @@ yslb <- function(data, products = TRUE){
                     yslb_stats = yslb_stats,
                     yslb_plot = yslb_plot)
   if(products == TRUE){
+    # folder
+    if(!dir.exists("outputs")){dir.create("outputs")}
     # terra::writeRaster(yslb, paste0("./outputs/", name, "YSLB.tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(yslb), paste0("./outputs/", name, "YSLB.tif"))
@@ -153,8 +154,7 @@ fire_freq <- function(data, products = TRUE){
 
   # products
   cli::cli_progress_step("Organising products")
-  # folder
-  if(!dir.exists("outputs")){dir.create("outputs")}
+
   # naming
   name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
                  data[["period"]][1], "-", data[["period"]][2], "_")
@@ -186,6 +186,8 @@ fire_freq <- function(data, products = TRUE){
                     fire_freq_stats = freq_stats,
                     fire_freq_plot = freq_plot)
   if(products == TRUE){
+    # folder
+    if(!dir.exists("outputs")){dir.create("outputs")}
     # terra::writeRaster(fire_frq, paste0("./outputs/", name, "FFREQ.tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(fire_frq), paste0("./outputs/", name, "FFREQ.tif"))
@@ -373,8 +375,7 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
 
   ## products
   cli::cli_progress_step("Organising products")
-  # folder
-  if(!dir.exists("outputs")){dir.create("outputs")}
+
   # naming
   name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
                  data[["period"]][1], "-", data[["period"]][2], "_",
@@ -415,6 +416,8 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
                    interval_measure = measure)
 
   if(products == TRUE){
+    # folder
+    if(!dir.exists("outputs")){dir.create("outputs")}
     # terra::writeRaster(int_dat, paste0("./outputs/", name, ".tif"))
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(int_dat), paste0("./outputs/", name, ".tif"))
