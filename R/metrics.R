@@ -43,12 +43,17 @@
 yslb <- function(data, products = TRUE){
   # yslb
   cli::cli_progress_step("Calculating YSLB")
+
   template <- terra::rast(data[["aoi_alb"]], res = 30)
-  yr_rst <- terra::rasterize(data[["fh_alb"]], template,
-                             field = "fih_year1", fun = "max")
-  yr_crp <- terra::crop(terra::mask(yr_rst, mask = data[["aoi_alb"]]),
-                        data[["aoi_alb"]])
-  current <- max(data[["fh_alb"]]$fih_year1)
+
+  vec <- terra::vect(data[["fh_alb"]])
+
+  yr_crp <- vec[order(vec$fih_year1),] %>%
+    terra::rasterize(template, field = "fih_year1") %>%
+    terra::crop(terra::vect(data[["aoi_alb"]]), mask = TRUE)
+
+  # take current from user specified date range
+  current <- data[["period"]][2]
   yslb <- current - yr_crp
   # products
   cli::cli_progress_step("Organising products")
@@ -142,10 +147,9 @@ fire_freq <- function(data, products = TRUE){
   cli::cli_progress_step("Calculating fire frequency")
   template <- terra::rast(data[["aoi_alb"]], res = 30)
   data[["fh_alb"]]$n <- 1
-  frq_rst <- terra::rasterize(data[["fh_alb"]], template,
-                              field = "n", sum = TRUE)
-  fire_frq <- terra::crop(terra::mask(frq_rst, mask = data[["aoi_alb"]]),
-                          data[["aoi_alb"]])
+  fire_frq <- terra::rasterize(data[["fh_alb"]], template,
+                              field = "n", sum = TRUE) %>%
+    terra::crop(terra::vect(data[["aoi_alb"]]), mask = TRUE)
 
   # products
   cli::cli_progress_step("Organising products")
@@ -257,7 +261,7 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
     terra::mask(terra::vect(aoi_dat))
 
   # intended period of search
-  yrs <- data$period[1]:data$period[2]
+  yrs <- data[["period"]][1]:data[["period"]][2]
 
   # measure
   measure <- tolower(measure)
@@ -394,10 +398,20 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
     dplyr::rename(!!rname:= value) %>%
     dplyr::select(-layer, -count)
 
+  # plot
+  int_plot <- ggplot(int_stats) +
+    geom_col(aes(x = .data[[measure]], y = area_ha)) +
+    labs(x = "years relating to interval",
+         y = "area (ha)",
+         title = snakecase::to_mixed_case(name, sep_out = " "),
+         caption = expression(italic("Data: DBCA_Fire_History_DBCA_060"))) +
+    theme_bw()
+
   # output list
   int_list <- list(interval = int_dat,
                    interval_map = int_map,
                    interval_stats = int_stats,
+                   interval_plot = int_plot,
                    interval_measure = measure)
 
   if(products == TRUE){
@@ -405,6 +419,7 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
     # raster work around to get geotiff playing nicely in ArcMAP
     raster::writeRaster(raster::raster(int_dat), paste0("./outputs/", name, ".tif"))
     suppressMessages(ggsave(filename = paste0("./outputs/", name, "_map.png"), int_map))
+    suppressMessages(ggsave(filename = paste0("./outputs/", name, "_plot.png"), int_plot))
     readr::write_csv(int_stats, paste0("./outputs/", name, "_stats.csv"))
   }
   return(int_list)
