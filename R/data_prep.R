@@ -141,7 +141,7 @@ DBCA_aoi <- function(choice, block = FALSE){
   aoi_list <- list(aoi = aoi,
                    aoi_name = choice)
   if(dim(aoi_list$aoi)[1] == 0) {
-    cli::cli_alert_danger("Can't find that choice. Is it a forest block?")
+    cli::cli_abort("Can't find that choice. Is it a forest block?")
   } else {
     return(aoi_list)
     }
@@ -249,12 +249,12 @@ assemble_data <- function(fire_path, from, to, aoi){
     if(dim(fh_alb)[1] != 0) {
       return(dat_list)
     } else {
-      cli::cli_alert_danger("There is no fire history data for that location and period")
+      cli::cli_abort("There is no fire history data for that location and period")
       stop("Nothing in that period")
     }
 
   } else {
-    cli::cli_alert_danger("There is no fire history data for that location")
+    cli::cli_abort("There is no fire history data for that location")
     stop("Nothing in that location")
   }
 
