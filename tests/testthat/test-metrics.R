@@ -1,0 +1,33 @@
+test_that("YSLB works", {
+  data <- readRDS(test_path("fixtures", "example_data.rds"))
+  yslb_result <- yslb(data, products = FALSE)
+  expect_type(yslb_result, "list")
+  expect_equal(yslb_result[["yslb_stats"]][[3,2]], 9677.79)
+  expect_equal(yslb_result[["yslb_stats"]][[8,2]], 0.18)
+  expect_equal(length(yslb_result), 4)
+  expect_s4_class(yslb_result[["yslb"]], "SpatRaster")
+  expect_s3_class(yslb_result[["yslb_map"]], "ggplot")
+})
+
+test_that("fire_freq works", {
+  data <- readRDS(test_path("fixtures", "example_data.rds"))
+  ffreq_result <- fire_freq(data, products = FALSE)
+  expect_type(ffreq_result, "list")
+  expect_equal(ffreq_result[["fire_freq_stats"]][[1,2]], 3877.74)
+  expect_equal(ffreq_result[["fire_freq_stats"]][[4,2]], 1699.92)
+  expect_equal(length(ffreq_result), 4)
+  expect_s4_class(ffreq_result[["fire_freq"]], "SpatRaster")
+  expect_s3_class(ffreq_result[["fire_freq_map"]], "ggplot")
+})
+
+test_that("fire_interval works", {
+  data <- readRDS(test_path("fixtures", "example_data.rds"))
+  int_result <- fire_interval(data, measure = "min", products = FALSE)
+  expect_type(int_result, "list")
+  expect_equal(length(int_result), 5)
+  expect_equal(int_result[["interval_measure"]], "min")
+  expect_equal(int_result[["interval_stats"]][[5,2]], 5851.71)
+  expect_equal(int_result[["interval_stats"]][[10,2]], 1768.86)
+  expect_s4_class(int_result[["interval"]], "SpatRaster")
+  expect_s3_class(int_result[["interval_map"]], "ggplot")
+})
