@@ -186,40 +186,70 @@ yslb <- function(data, products = TRUE){
 fire_freq <- function(data, products = TRUE){
   # fire freq
   cli::cli_progress_step("Calculating fire frequency")
+  # template for all rasters
   template <- terra::rast(data[["aoi_alb"]], res = 30)
   data[["fh_alb"]]$n <- 1
+  # aoi raster mask
+  aoi_msk <- data[["aoi_msk"]]
   fire_frq <- terra::rasterize(data[["fh_alb"]], template,
-                              field = "n", sum = TRUE) %>%
-    terra::crop(terra::vect(data[["aoi_alb"]]), mask = TRUE)
-
+                               field = "n", fun = "sum") %>%
+    terra::crop(aoi_msk, mask = TRUE)
+  
+  # find unburnt
+  zero_msk <- aoi_msk %>%
+    terra::subst(1, 0) %>%
+    terra::crop(fire_frq) %>%
+    terra::mask(fire_frq, inverse = TRUE)
+  
   # products
   cli::cli_progress_step("Organising products")
-
+  
   # naming
   name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
-                 data[["period"]][1], "-", data[["period"]][2], "_")
+                 data[["FYperiod"]][1], "-", data[["FYperiod"]][2], "_")
+  
+  # data caption
+  ddate <- data[["data_date"]]
+  dcap <- paste0("Data: DBCA_Fire_History_DBCA_060\nDownloaded on ", ddate)
+  
   # map
-  freq_map <- rasterVis::gplot(fire_frq) +
-    geom_tile(aes(fill = value)) +
+  freq_map <- ggplot() +
+    tidyterra::geom_spatraster(data = sum(fire_frq, zero_msk, na.rm = TRUE)) +
+    
     scale_fill_viridis_c(na.value = "transparent", name = "Fire Frequency") +
     labs(x = "",
          y = "",
          title = paste0(snakecase::to_mixed_case(name, sep_out = " "), " Fire Frequency"),
-         caption = expression(italic("Data: DBCA_Fire_History_DBCA_060"))) +
-    coord_equal() +
+         caption = dcap) +
+    coord_sf(crs = 9473) +
     theme_bw()
+  
   # stats
+  aoi_area <- dplyr::as_tibble(terra::freq(aoi_msk)) %>%
+    dplyr::mutate(aoi_area = count * 0.09) %>%
+    dplyr::pull(aoi_area)
+  
+  unburnt <- dplyr::as_tibble(terra::freq(zero_msk)) %>%
+    dplyr::mutate(value = 0,
+                  area_ha = count * 0.09)
+  
   freq_stats <- dplyr::as_tibble(terra::freq(fire_frq)) %>%
-    dplyr::mutate(area_ha = count * 0.09) %>%
-    dplyr::rename(yslb = value) %>%
+    dplyr::mutate(value = value,
+                  area_ha = count * 0.09) %>%
+    dplyr::bind_rows(unburnt) %>%
+    dplyr::mutate(aoi_ha = aoi_area,
+                  percent = area_ha/aoi_area * 100) %>%
+    dplyr::rename(n = value) %>%
+    dplyr::arrange(n) %>%
     dplyr::select(-layer, -count)
+  
   # plot
   freq_plot <- ggplot(freq_stats) +
-    geom_col(aes(x = yslb, y = area_ha)) +
+    geom_col(aes(x = n, y = area_ha)) +
     labs(x = "times burnt in period",
          y = "area (ha)",
          title = paste0(snakecase::to_mixed_case(name, sep_out = " "), " Fire Frequency"),
-         caption = expression(italic("Data: DBCA_Fire_History_DBCA_060"))) +
+         caption = dcap) +
     theme_bw()
   freq_list <- list(fire_freq = fire_frq,
                     fire_freq_map = freq_map,
