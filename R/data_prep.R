@@ -180,6 +180,35 @@ make_wkt <- function(aoi, fh_crs){
   return(aoi_wkt)
 }
 
+#' Calculate financial year and quarter from a date
+#' 
+#' `fin_yr` takes a date object and a statring month and calculates a financial
+#' year and quarter.
+#' 
+#' @param x a year object
+#' @param fs start month in numerical representation. Defaults to 7 for a standard 
+#' Australian finacial year.
+#' 
+#' @return a character string in the format YYYY_Q, where YYYY is the finacial 
+#' year and Q is the numerical quarter of that finacial year.
+#' 
+#' @examples
+#' \dontrun{
+#' f_q <- fin_yr(x = 2023-02-23, fs = 7)
+#' }
+#' 
+#' @keywords internal
+#' 
+#' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
+#' 
+#' @importFrom lubridate quarter
+fin_yr <- function(x, fs = 7){
+  d <- lubridate::ymd(x)
+  fyq <- as.character(lubridate::quarter(d, with_year = TRUE, fiscal_start = fs))
+  out <- gsub("\\.", "_", fyq)
+  return(out)
+}
+
 #' Assemble data for calculating fire metrics
 #'
 #' `assemble_data` brings together the DBCA Fire History data, the area of
