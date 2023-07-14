@@ -320,75 +320,84 @@ fire_freq <- function(data, products = TRUE){
 #'
 #' @export
 fire_interval <- function(data, measure = c("min", "max", "mean"), products = TRUE){
-  # aoi vector
-  aoi_dat <- data[["aoi_alb"]]
-
+  # aoi raster mask
+  aoi_msk <- data[["aoi_msk"]]
+  
   # fh vector
   fh_dat <- data[["fh_alb"]]
-
+  
   # extent raster and stack filler for 0 fires in year
-  blnk_rst <- terra::rast(terra::ext(aoi_dat), res = c(30,30), crs = "EPSG:9473")
+  blnk_rst <- terra::rast(terra::ext(aoi_msk), res = c(30,30), crs = "EPSG:9473")
   blnk_rst[] <- 0
   blnk_rst_mskd <- blnk_rst %>%
-    terra::mask(terra::vect(aoi_dat))
-
+    terra::crop(aoi_msk, mask = TRUE)
+  
   # intended period of search
-  yrs <- data[["period"]][1]:data[["period"]][2]
-
+  yrs <- data[["FYperiod"]][1]:data[["FYperiod"]][2]
+  
   # measure
   measure <- tolower(measure)
-
+  
   ## create earliest layer for stack
   cli::cli_progress_step("Stacking fires")
+  # create sf version for fasterize
   suppressWarnings(
-    rst1 <- fh_dat %>%
-      dplyr::filter(fih_year1 == yrs[1]) %>%
+    rst1sf <- fh_dat %>%
+      dplyr::filter(fin_y == yrs[1]) %>%
       dplyr::mutate(n = 1) %>%
       sf::st_crop(blnk_rst) %>%
-      terra::vect()
-    )
-
+      sf::st_make_valid() %>%
+      sf::st_cast()
+  )
+  
   # catch if 1st year no fire
-  if(dim(rst1)[1] == 0){
+  if(dim(rst1sf)[1] == 0){
     rst_stck <- blnk_rst_mskd
   } else {
-    rst_stck <- terra::rasterize(rst1, blnk_rst_mskd, field = "n", fun = "first", background = NA_real_)
+    rst_stck <- fasterize::fasterize(rst1sf, raster::raster(blnk_rst_mskd), 
+                                     field = "n", fun = "first",
+                                     background = NA_real_) %>%
+      terra::rast()
     rst_stck[is.na(rst_stck)] <- 0
   }
-
+  
   # name layer
   names(rst_stck) <- yrs[1]
-
+  
   ## create all other layers for stack
   for(i in 2:length(yrs)){
     yr <- yrs[i]
-
+    # create sf version for fasterize
     suppressWarnings(
-      rst <- fh_dat %>%
+      rstsf <- fh_dat %>%
         dplyr::filter(fih_year1 == yr) %>%
         dplyr::mutate(n = 1) %>%
         sf::st_crop(blnk_rst_mskd) %>%
-        terra::vect()
-      )
-
-    if(dim(rst)[1] == 0){
+        sf::st_make_valid() %>%
+        sf::st_cast()
+    )
+    
+    if(dim(rstsf)[1] == 0){
       rst_out <- blnk_rst_mskd
     } else {
-      rst_out <- terra::rasterize(rst, blnk_rst_mskd, field = "n", fun = "first", background = NA_real_)
+      rst_out <- fasterize::fasterize(rstsf, raster::raster(blnk_rst_mskd), 
+                                      field = "n", fun = "first", 
+                                      background = NA_real_)  %>%
+        terra::rast()
       rst_out[is.na(rst_out)] <- 0
     }
-
+    
     # name layer
     names(rst_out) <- yrs[i]
-
+    
     # add to stack
     rst_stck <- c(rst_stck, rst_out)
   }
-
+  
   # mask stack to aoi
   rst_stck_mskd <- rst_stck %>%
-    terra::mask(terra::vect(aoi_dat))
-
+    terra::crop(aoi_msk, mask = TRUE)
+  
   # functions for measures
   max_int <- function(x){
     if(all(is.na(x))){
@@ -417,10 +426,10 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
       return(out)
     }
   }
-
+  
   # convert to stars object to minimise calc times
   stars_stck_mskd <- stars::st_as_stars(rst_stck_mskd)
-
+  
   # calculate measure
   if(measure == "max"){
     cli::cli_progress_step("Calculating maximum interval")
@@ -442,49 +451,60 @@ fire_interval <- function(data, measure = c("min", "max", "mean"), products = TR
       }
     }
   }
-
+  
   ## products
   cli::cli_progress_step("Organising products")
-
+  
   # naming
   name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
-                 data[["period"]][1], "-", data[["period"]][2], "_",
+                 data[["FYperiod"]][1], "-", data[["FYperiod"]][2], "_",
                  measure, "FireInterval")
-
+  
+  # data caption
+  ddate <- data[["data_date"]]
+  dcap <- paste0("Data: DBCA_Fire_History_DBCA_060\nDownloaded on ", ddate)
+  
   # map
-  int_map <- rasterVis::gplot(int_dat) +
-    geom_tile(aes(fill = value)) +
-    scale_fill_viridis_c(na.value = "transparent", name = paste(measure, "\nFire Interval")) +
+  int_map <- ggplot() +
+    tidyterra::geom_spatraster(data = int_dat) +
+    scale_fill_viridis_c(na.value = "transparent", name = "Fire Frequency") +
     labs(x = "",
          y = "",
          title = snakecase::to_mixed_case(name, sep_out = " "),
-         caption = expression(italic("Data: DBCA_Fire_History_DBCA_060"))) +
-    coord_equal() +
+         caption = dcap) +
+    coord_sf(crs = 9473) +
     theme_bw()
-
+  
   # stats
   rname <- rlang::as_name(measure)
+  
+  aoi_area <- dplyr::as_tibble(terra::freq(aoi_msk)) %>%
+    dplyr::mutate(aoi_area = count * 0.09) %>%
+    dplyr::pull(aoi_area)
+  
   int_stats <- dplyr::as_tibble(terra::freq(int_dat)) %>%
-    dplyr::mutate(area_ha = count * 0.09) %>%
+    dplyr::mutate(area_ha = count * 0.09,
+                  aoi_ha = aoi_area,
+                  percent = area_ha/aoi_area * 100) %>%
     dplyr::rename(!!rname:= value) %>%
     dplyr::select(-layer, -count)
-
+  
   # plot
   int_plot <- ggplot(int_stats) +
     geom_col(aes(x = .data[[measure]], y = area_ha)) +
     labs(x = "years relating to interval",
          y = "area (ha)",
          title = snakecase::to_mixed_case(name, sep_out = " "),
-         caption = expression(italic("Data: DBCA_Fire_History_DBCA_060"))) +
+         caption = dcap) +
     theme_bw()
-
+  
   # output list
   int_list <- list(interval = int_dat,
                    interval_map = int_map,
                    interval_stats = int_stats,
                    interval_plot = int_plot,
                    interval_measure = measure)
-
+  
   if(products == TRUE){
     # folder
     if(!dir.exists("outputs")){dir.create("outputs")}
