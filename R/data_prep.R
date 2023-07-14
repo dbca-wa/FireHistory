@@ -225,12 +225,15 @@ fin_yr <- function(x, fs = 7){
 #' @param fire_path a character vector of the full file path to the previously
 #' downloaded DBCA Fire History DBCA 060 shape file (see details). File path includes
 #' file extension ".shp"
-#' @param from numeric representing the starting year for the analysis and
-#' generation of metrics.
-#' @param to numeric representing the current year for the analysis and
-#' generation of metrics.
+#' @param FYfrom numeric representing the starting year for the analysis and
+#' generation of metrics. Years are financial year (July-June).
+#' @param FYto numeric representing the current year for the analysis and
+#' generation of metrics. Years are financial year (July-June).
 #' @param aoi the aoi object previously created by using either [FireHistory::user_aoi()]
 #' or [FireHistory::DBCA_aoi()]
+#' @param accessed_on date that the DBCA Fire History DBCA 060 shape file was 
+#' downloaded and accessed. Defaults to NULL. Intention is to be able to track 
+#' of when the data was accessed as over time the base data will be updated.
 #'
 #' @returns A list containing the spatially and temporally subsetted Fire History
 #' polygons, the aoi polygon/s, the aoi name and period. Spatial data are of class
@@ -251,7 +254,7 @@ fin_yr <- function(x, fs = 7){
 #' @importFrom magrittr %>%
 #'
 #' @export
-assemble_data <- function(fire_path, from, to, aoi){
+assemble_data <- function(fire_path, FYfrom, FYto, aoi, accessed_on = NULL){
   # messenging
   cli::cli_progress_step("Obtaining extents")
   # find crs of fh input
@@ -265,26 +268,34 @@ assemble_data <- function(fire_path, from, to, aoi){
   names(fh) <- tolower(names(fh))
   if(dim(fh)[1] != 0){
     fh_alb <- fh %>%
-      dplyr::filter(fih_year1 >= from & fih_year1 <= to) %>%
+      dplyr::mutate(fin_yq = fin_yr(fih_date1),
+                    fin_y = as.numeric(substr(fin_yq, 1, 4))) %>%
+      dplyr::filter(fin_y >= FYfrom & fin_y <= FYto) %>%
       sf::st_make_valid() %>%
       sf::st_transform(9473)
     aoi_alb <- aoi[['aoi']] %>%
       sf::st_make_valid() %>%
       sf::st_transform(9473)
+    # make raster aoi mask
+    template <- terra::rast(aoi_alb, res = 30)
+    aoi_msk <- terra::rasterize(terra::vect(aoi_alb), template)
+    
     dat_list <- list(fh_alb = fh_alb,
                      aoi_alb = aoi_alb,
+                     aoi_msk = aoi_msk,
                      aoi_name = aoi[['aoi_name']],
-                     period = c(from,to))
+                     FYperiod = c(FYfrom,FYto),
+                     data_date = accessed_on)
     if(dim(fh_alb)[1] != 0) {
       return(dat_list)
     } else {
       cli::cli_abort("There is no fire history data for that location and period")
       stop("Nothing in that period")
     }
-
+    
   } else {
     cli::cli_abort("There is no fire history data for that location")
     stop("Nothing in that location")
   }
-
+  
 }
