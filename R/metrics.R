@@ -43,51 +43,91 @@
 yslb <- function(data, products = TRUE){
   # yslb
   cli::cli_progress_step("Calculating YSLB")
-
+  # template for all rasters
   template <- terra::rast(data[["aoi_alb"]], res = 30)
-
+  # fh vector
   vec <- terra::vect(data[["fh_alb"]])
-
-  yr_crp <- vec[order(vec$fih_year1),] %>%
-    terra::rasterize(template, field = "fih_year1") %>%
-    terra::crop(terra::vect(data[["aoi_alb"]]), mask = TRUE)
-
+  # aoi raster mask
+  aoi_msk <- data[["aoi_msk"]]
+  # rasterize fire history and crop/mask to aoi
+  yr_crp <- vec[order(vec$fih_year1), ] %>% 
+    terra::rasterize(template, field = "fin_y") %>%
+    terra::crop(aoi_msk, mask = TRUE)
   # take current from user specified date range
-  current <- data[["period"]][2]
+  current <- data[["FYperiod"]][2]
+  # calculate yslb
   yslb <- current - yr_crp
+  
+  # find unburnt
+  zero_msk <- aoi_msk %>%
+    terra::subst(1, 0) %>%
+    terra::crop(yslb) %>%
+    terra::mask(yslb, inverse = TRUE)
+  
+  # currently can't plot the zero (unknown) with sensible legend - sticking with
+  # vector at present for display
+  zero_vec <- terra::as.polygons(zero_msk)
+  
   # products
   cli::cli_progress_step("Organising products")
-
+  
   # naming
   name <- paste0(snakecase::to_parsed_case(data[["aoi_name"]]), "_",
-                 data[["period"]][1], "-", data[["period"]][2], "_")
-  # map
-  yslb_map <- rasterVis::gplot(yslb) +
-    geom_tile(aes(fill = value)) +
+                 data[["FYperiod"]][1], "-", data[["FYperiod"]][2], "_")
+  # data caption
+  ddate <- data[["data_date"]]
+  dcap <- paste0("Data: DBCA_Fire_History_DBCA_060\nDownloaded on ", ddate)
+  
+  
+  # yslb map spat rast and vect
+  yslb_map <- ggplot(zero_vec) +
+    tidyterra::geom_spatraster(data = yslb) +
+    tidyterra::geom_spatvector(aes(color = "grey")) +
+    scale_color_discrete(name = "unburnt",
+                         labels = "") +
     scale_fill_viridis_c(na.value = "transparent", name = "yslb") +
     labs(x = "",
          y = "",
          title = paste0(snakecase::to_mixed_case(name, sep_out = " "), " YSLB"),
-         caption = expression(italic("Data: DBCA_Fire_History_DBCA_060"))) +
-    coord_equal() +
+         caption = dcap) +
+    coord_sf(crs = 9473) +
     theme_bw()
+  
+  
   # stats
+  aoi_area <- dplyr::as_tibble(terra::freq(aoi_msk)) %>%
+    dplyr::mutate(aoi_area = count * 0.09) %>%
+    dplyr::pull(aoi_area)
+  
+  unburnt <- dplyr::as_tibble(terra::freq(zero_msk)) %>%
+    dplyr::mutate(value = "unknown",
+                  area_ha = count * 0.09)
+  
   yslb_stats <- dplyr::as_tibble(terra::freq(yslb)) %>%
-    dplyr::mutate(area_ha = count * 0.09) %>%
+    dplyr::mutate(value = as.character(value),
+                  area_ha = count * 0.09) %>%
+    dplyr::bind_rows(unburnt) %>%
+    dplyr::mutate(aoi_ha = aoi_area,
+                  percent = area_ha/aoi_area * 100) %>%
     dplyr::rename(yslb = value) %>%
     dplyr::select(-layer, -count)
+  
+  lvs <- yslb_stats[['yslb']] # levels for factor conversion to aid ordering in plot
+  
   # plot
   yslb_plot <- ggplot(yslb_stats) +
-    geom_col(aes(x = yslb, y = area_ha)) +
+    geom_col(aes(x = factor(yslb, levels = lvs, ordered = TRUE), y = area_ha)) +
     labs(x = "years",
          y = "area (ha)",
          title = paste0(snakecase::to_mixed_case(name, sep_out = " "), " YSLB"),
-         caption = expression(italic("Data: DBCA_Fire_History_DBCA_060"))) +
+         caption = dcap) +
     theme_bw()
+  
   yslb_list <- list(yslb = yslb,
                     yslb_map = yslb_map,
                     yslb_stats = yslb_stats,
                     yslb_plot = yslb_plot)
+  
   if(products == TRUE){
     # folder
     if(!dir.exists("outputs")){dir.create("outputs")}
