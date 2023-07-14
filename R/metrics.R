@@ -317,6 +317,7 @@ fire_freq <- function(data, products = TRUE){
 #' @importFrom stars st_as_stars st_apply
 #' @importFrom rlang as_name
 #' @importFrom raster writeRaster raster
+#' @importFrom fasterize fasterize
 #'
 #' @export
 fire_interval <- function(data, measure = c("min", "max", "mean"), products = TRUE){
