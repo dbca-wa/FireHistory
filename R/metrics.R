@@ -50,7 +50,7 @@ yslb <- function(data, products = TRUE){
   # aoi raster mask
   aoi_msk <- data[["aoi_msk"]]
   # rasterize fire history and crop/mask to aoi
-  yr_crp <- vec[order(vec$fih_year1), ] %>% 
+  yr_crp <- vec[order(vec$fin_y), ] %>% 
     terra::rasterize(template, field = "fin_y") %>%
     terra::crop(aoi_msk, mask = TRUE)
   # take current from user specified date range
