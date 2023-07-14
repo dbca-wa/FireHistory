@@ -29,7 +29,8 @@ Imports:
     stars,
     rlang,
     terra,
-    lubridate
+    lubridate,
+    fasterize
 Suggests: 
     covr,
     testthat (>= 3.0.0)
