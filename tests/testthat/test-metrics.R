@@ -1,5 +1,6 @@
 test_that("YSLB works", {
   data <- readRDS(test_path("fixtures", "example_data.rds"))
+  data$aoi_msk <- terra::unwrap(data$aoi_msk)
   yslb_result <- yslb(data, products = FALSE)
   expect_type(yslb_result, "list")
   expect_equal(yslb_result[["yslb_stats"]][[3,2]], 9662.22)
@@ -11,6 +12,7 @@ test_that("YSLB works", {
 
 test_that("fire_freq works", {
   data <- readRDS(test_path("fixtures", "example_data.rds"))
+  data$aoi_msk <- terra::unwrap(data$aoi_msk)
   ffreq_result <- fire_freq(data, products = FALSE)
   expect_type(ffreq_result, "list")
   expect_equal(ffreq_result[["fire_freq_stats"]][[1,2]], 3538.26)
@@ -22,6 +24,7 @@ test_that("fire_freq works", {
 
 test_that("fire_interval works", {
   data <- readRDS(test_path("fixtures", "example_data.rds"))
+  data$aoi_msk <- terra::unwrap(data$aoi_msk)
   int_result <- fire_interval(data, measure = "min", products = FALSE)
   expect_type(int_result, "list")
   expect_equal(length(int_result), 5)
