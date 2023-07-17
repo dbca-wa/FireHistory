@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">FireHistory</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.0</span>
       </span>
     </div>
 
@@ -44,6 +44,22 @@
       
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.0.0" id="firehistory-0200">FireHistory 0.2.0.0<a class="anchor" aria-label="anchor" href="#firehistory-0200"></a></h2>
+<p>This is a major release adding new features and fixing a number of bugs</p>
+<div class="section level4">
+<h4 id="bug-fixes-0-2-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-2-0-0"></a></h4>
+<ul><li>Error when trying to run <code>fire_freq</code> (#7)</li>
+<li>Error when trying to run <code>fire_interval</code> (#8)</li>
+</ul></div>
+<div class="section level4">
+<h4 id="major-changes-0-2-0-0">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-0-2-0-0"></a></h4>
+<ul><li>Cropping of raster data was previously done using the aoi vector, which could introduce inconsistencies in reporting areas. An aoi raster mask addresses this.</li>
+<li>The time periods are financial years (July-June) not calendar years (January-December). This is due to the fact that the fire season in the south west predominantly occurs during the summer months. Bear this in mind when analysing fires in the north.</li>
+<li>YSLB now contains an “unknown” category. This category is applied to any area in the aoi where there is no burn history for the time period chosen. It is reported on in exported stats and is represented in the map as a grey region bordered by a red boundary.</li>
+<li>Better axis labeling for column charts.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0.0" id="firehistory-0100">FireHistory 0.1.0.0<a class="anchor" aria-label="anchor" href="#firehistory-0100"></a></h2>
 <ul><li>Package has now migrated to DBCA Organisational GitHub (<a href="https://github.com/dbca-wa/FireHistory" class="external-link uri">https://github.com/dbca-wa/FireHistory</a>)</li>
@@ -79,7 +95,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

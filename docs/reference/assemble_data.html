@@ -18,7 +18,7 @@ interest (aoi) and the aoi name into a list."><!-- mathjax --><script src="https
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">FireHistory</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.0</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@ interest (aoi) and the aoi name into a list.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assemble_data</span><span class="op">(</span><span class="va">fire_path</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">aoi</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assemble_data</span><span class="op">(</span><span class="va">fire_path</span>, <span class="va">FYfrom</span>, <span class="va">FYto</span>, <span class="va">aoi</span>, accessed_on <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -63,19 +63,25 @@ downloaded DBCA Fire History DBCA 060 shape file (see details). File path includ
 file extension ".shp"</p></dd>
 
 
-<dt>from</dt>
+<dt>FYfrom</dt>
 <dd><p>numeric representing the starting year for the analysis and
-generation of metrics.</p></dd>
+generation of metrics. Years are financial year (July-June).</p></dd>
 
 
-<dt>to</dt>
+<dt>FYto</dt>
 <dd><p>numeric representing the current year for the analysis and
-generation of metrics.</p></dd>
+generation of metrics. Years are financial year (July-June).</p></dd>
 
 
 <dt>aoi</dt>
 <dd><p>the aoi object previously created by using either <code><a href="user_aoi.html">user_aoi()</a></code>
 or <code><a href="DBCA_aoi.html">DBCA_aoi()</a></code></p></dd>
+
+
+<dt>accessed_on</dt>
+<dd><p>date that the DBCA Fire History DBCA 060 shape file was
+downloaded and accessed. Defaults to NULL. Intention is to be able to track
+of when the data was accessed as over time the base data will be updated.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -107,7 +113,7 @@ and data is now reprojected to Albers GDA2020 (epsg:9473).</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">fire_data</span> <span class="op">&lt;-</span> <span class="fu">assemble_data</span><span class="op">(</span>fire_path <span class="op">=</span> <span class="st">"C:/path/to/data/DBCA_Fire_History_DBCA_060.shp"</span>,</span></span>
-<span class="r-in"><span>from <span class="op">=</span> <span class="fl">1988</span>, to <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span><span class="op">)</span></span></span>
+<span class="r-in"><span>FYfrom <span class="op">=</span> <span class="fl">1988</span>, FYto <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span>, accessed_on <span class="op">=</span> <span class="st">"01/01/1901"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -124,7 +130,7 @@ and data is now reprojected to Albers GDA2020 (epsg:9473).</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

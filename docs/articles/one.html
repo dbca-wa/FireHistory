@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">FireHistory</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0.0</span>
       </span>
     </div>
 
@@ -203,10 +203,20 @@ history data.</p>
 <code class="sourceCode R"><span><span class="co"># file path to the fire history data - note includes the file extension</span></span>
 <span><span class="va">path</span> <span class="op">&lt;-</span> <span class="st">"C:/somewhere/DBCA_Fire_History_DBCA_060.shp"</span></span>
 <span><span class="co"># here we want to temporally restrict it to the period 1988-2022</span></span>
-<span><span class="va">wandoo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, from <span class="op">=</span> <span class="fl">1988</span>, to <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span><span class="op">)</span></span>
+<span><span class="va">wandoo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, FYfrom <span class="op">=</span> <span class="fl">1988</span>, FYto <span class="op">=</span> <span class="fl">2022</span>, </span>
+<span>                             aoi <span class="op">=</span> <span class="va">aoi</span>, accessed_on <span class="op">=</span> <span class="st">"01/01/2023"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># works the same for a forest block</span></span>
-<span><span class="va">jasper_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, from <span class="op">=</span> <span class="fl">1988</span>, to <span class="op">=</span> <span class="fl">2022</span>, aoi <span class="op">=</span> <span class="va">aoi</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">jasper_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/assemble_data.html">assemble_data</a></span><span class="op">(</span>fire_path <span class="op">=</span> <span class="va">path</span>, FYfrom <span class="op">=</span> <span class="fl">1988</span>, FYto <span class="op">=</span> <span class="fl">2022</span>, </span>
+<span>                             aoi <span class="op">=</span> <span class="va">aoi</span>, accessed_on <span class="op">=</span> <span class="st">"01/01/2023"</span><span class="op">)</span></span></code></pre></div>
+<p>A couple of things to note here.Firstly the <code>FYfrom</code> and
+<code>FYto</code> parameters. The years are financial years (July-June)
+not calendar years (January to December). This is because, in the south
+west, the fire season occurs predominantly during the summer months.
+Bear this in mind if your aoi is in the north.</p>
+<p>Secondly, the <code>accessed_on</code> parameter is for the user to
+record the date of when they accessed the DBCA_Fire_History_DBCA_060
+shapefile. This date stamp will appear as a caption on plots etc.</p>
 <p>Whilst the fire history data is huge, as it is subset using the AOI
 prior to reading into memory, this process is reasonably fast (about
 10-20 seconds for the wandoo data set). Saving it to an object (here
@@ -257,7 +267,7 @@ folder in your working directory and save the four products to it.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
