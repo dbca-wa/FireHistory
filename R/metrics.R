@@ -38,6 +38,7 @@
 #' @importFrom dplyr as_tibble mutate rename select
 #' @importFrom readr write_csv
 #' @importFrom magrittr %>%
+#' @importFrom tidyterra geom_spatraster geom_spatvector
 #'
 #' @export
 yslb <- function(data, products = TRUE){
@@ -181,6 +182,7 @@ yslb <- function(data, products = TRUE){
 #' @importFrom dplyr as_tibble mutate rename select
 #' @importFrom readr write_csv
 #' @importFrom magrittr %>%
+#' @importFrom tidyterra geom_spatraster
 #'
 #' @export
 fire_freq <- function(data, products = TRUE){
@@ -318,6 +320,7 @@ fire_freq <- function(data, products = TRUE){
 #' @importFrom rlang as_name
 #' @importFrom raster writeRaster raster
 #' @importFrom fasterize fasterize
+#' @importFrom tidyterra geom_spatraster
 #'
 #' @export
 fire_interval <- function(data, measure = c("min", "max", "mean"), products = TRUE){
