@@ -4,21 +4,25 @@
 \alias{assemble_data}
 \title{Assemble data for calculating fire metrics}
 \usage{
-assemble_data(fire_path, from, to, aoi)
+assemble_data(fire_path, FYfrom, FYto, aoi, accessed_on = NULL)
 }
 \arguments{
 \item{fire_path}{a character vector of the full file path to the previously
 downloaded DBCA Fire History DBCA 060 shape file (see details). File path includes
 file extension ".shp"}
 
-\item{from}{numeric representing the starting year for the analysis and
-generation of metrics.}
+\item{FYfrom}{numeric representing the starting year for the analysis and
+generation of metrics. Years are financial year (July-June).}
 
-\item{to}{numeric representing the current year for the analysis and
-generation of metrics.}
+\item{FYto}{numeric representing the current year for the analysis and
+generation of metrics. Years are financial year (July-June).}
 
 \item{aoi}{the aoi object previously created by using either \code{\link[=user_aoi]{user_aoi()}}
 or \code{\link[=DBCA_aoi]{DBCA_aoi()}}}
+
+\item{accessed_on}{date that the DBCA Fire History DBCA 060 shape file was
+downloaded and accessed. Defaults to NULL. Intention is to be able to track
+of when the data was accessed as over time the base data will be updated.}
 }
 \value{
 A list containing the spatially and temporally subsetted Fire History
@@ -43,7 +47,7 @@ and data is now reprojected to Albers GDA2020 (epsg:9473).
 \examples{
 \dontrun{
 fire_data <- assemble_data(fire_path = "C:/path/to/data/DBCA_Fire_History_DBCA_060.shp",
-from = 1988, to = 2022, aoi = aoi)
+FYfrom = 1988, FYto = 2022, aoi = aoi, accessed_on = "01/01/1901")
 }
 
 }
