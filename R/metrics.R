@@ -81,9 +81,9 @@ yslb <- function(data, products = TRUE){
   
   
   # yslb map spat rast and vect
-  yslb_map <- ggplot(zero_vec) +
+  yslb_map <- ggplot() +
     tidyterra::geom_spatraster(data = yslb) +
-    tidyterra::geom_spatvector(aes(color = "grey")) +
+    tidyterra::geom_spatvector(data = zero_vec, aes(color = "grey")) +
     scale_color_discrete(name = "unburnt",
                          labels = "") +
     scale_fill_viridis_c(na.value = "transparent", name = "yslb") +
