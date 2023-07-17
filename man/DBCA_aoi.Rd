@@ -10,6 +10,9 @@ DBCA_aoi(choice, block = FALSE)
 \item{choice}{a character vector of a single DBCA tenure or forest block name
 as determined by previously running \code{\link[=find_tenure]{find_tenure()}} or
 \code{\link[=find_block]{find_block()}}.}
+
+\item{block}{logical. Is the choice a forest block? Enables search of correct
+shape file of extents.}
 }
 \value{
 A named list containing \code{aoi} (an sf class object) and \code{aoi_name}
