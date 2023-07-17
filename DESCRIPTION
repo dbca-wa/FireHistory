@@ -29,6 +29,7 @@ Imports:
     stars,
     rlang,
     terra,
+    tidyterra,
     lubridate,
     fasterize
 Suggests: 
