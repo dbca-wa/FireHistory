@@ -12,4 +12,7 @@ saveRDS(fh_crs, "./tests/testthat/fixtures/fh_crs.rds")
 
 # assembled data for metrics testing
 example_data <- assemble_data(fire_path, FYfrom = 2000, FYto = 2022, aoi = aoi_example, accessed_on = NULL)
+# terra objects become pointers to allow functions written in C.
+# must wrap/unwrap object to avoid errors
+example_data$aoi_msk <- terra::wrap(example_data$aoi_msk)
 saveRDS(example_data, "./tests/testthat/fixtures/example_data.rds")
