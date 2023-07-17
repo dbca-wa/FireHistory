@@ -136,18 +136,29 @@ After defining the AOI, you use it to subset the downloaded fire history data.
 # file path to the fire history data - note includes the file extension
 path <- "C:/somewhere/DBCA_Fire_History_DBCA_060.shp"
 # here we want to temporally restrict it to the period 1988-2022
-wandoo_data <- assemble_data(fire_path = path, from = 1988, to = 2022, aoi = aoi)
+wandoo_data <- assemble_data(fire_path = path, FYfrom = 1988, FYto = 2022, 
+                             aoi = aoi, accessed_on = "01/01/2023")
 
 # works the same for a forest block
-jasper_data <- assemble_data(fire_path = path, from = 1988, to = 2022, aoi = aoi)
+jasper_data <- assemble_data(fire_path = path, FYfrom = 1988, FYto = 2022, 
+                             aoi = aoi, accessed_on = "01/01/2023")
 ```
+
+A couple of things to note here.Firstly the `FYfrom` and `FYto` parameters. The 
+years are financial years (July-June) not calendar years (January to December). 
+This is because, in the south west, the fire season occurs predominantly during 
+the summer months. Bear this in mind if your aoi is in the north.
+
+Secondly, the `accessed_on` parameter is for the user to record the date of when 
+they accessed the DBCA_Fire_History_DBCA_060 shapefile. This date stamp will appear 
+as a caption on plots etc.
 
 Whilst the fire history data is huge, as it is subset using the AOI prior 
 to reading into memory, this process is reasonably fast (about 10-20 seconds for 
 the wandoo data set). Saving it to an object (here called wandoo_data) is 
 important as this will be passed along to the fire metrics functions. If there is 
 nothing in the fire history for the AOI the function will return an error. The 
-fire history is most complete on DBCA tenure  and forest blocks and generally 
+fire history is most complete on DBCA tenure and forest blocks and generally 
 even better in more populous regions/areas.
 
 ## Fire Metrics
