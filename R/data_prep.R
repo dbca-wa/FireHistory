@@ -113,6 +113,9 @@ find_block <- function(like = NULL){
 #' @param choice a character vector of a single DBCA tenure or forest block name
 #' as determined by previously running [FireHistory::find_tenure()] or
 #' [FireHistory::find_block()].
+#' 
+#' @param block logical. Is the choice a forest block? Enables search of correct 
+#' shape file of extents.
 #'
 #' @returns A named list containing `aoi` (an sf class object) and `aoi_name`
 #' (the tenure name of the aoi).
@@ -244,7 +247,7 @@ fin_yr <- function(x, fs = 7){
 #' @examples
 #' \dontrun{
 #' fire_data <- assemble_data(fire_path = "C:/path/to/data/DBCA_Fire_History_DBCA_060.shp",
-#' from = 1988, to = 2022, aoi = aoi)
+#' FYfrom = 1988, FYto = 2022, aoi = aoi, accessed_on = "01/01/1901)
 #' }
 #'
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
