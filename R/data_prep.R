@@ -247,7 +247,7 @@ fin_yr <- function(x, fs = 7){
 #' @examples
 #' \dontrun{
 #' fire_data <- assemble_data(fire_path = "C:/path/to/data/DBCA_Fire_History_DBCA_060.shp",
-#' FYfrom = 1988, FYto = 2022, aoi = aoi, accessed_on = "01/01/1901)
+#' FYfrom = 1988, FYto = 2022, aoi = aoi, accessed_on = "01/01/1901")
 #' }
 #'
 #' @author Bart Huntley, \email{bart.huntley@@dbca.wa.gov.au}
