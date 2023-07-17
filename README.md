@@ -13,10 +13,7 @@ issues](https://img.shields.io/github/issues/dbca-wa/FireHistory.svg?style=popou
 [![Last-changedate](https://img.shields.io/github/last-commit/dbca-wa/FireHistory.svg)](https://github.com/dbca-wa/FireHistory/commits/master)
 [![Github top
 language](https://img.shields.io/github/languages/top/dbca-wa/FireHistory.svg)](https://github.com/dbca-wa/FireHistory/)
-[![R-CMD-check](https://github.com/dbca-wa/dbca-wa/FireHistory/R-CMD-check/badge.svg)](https://github.com/dbca-wa/FireHistory/actions)
 [![DOI](https://zenodo.org/badge/529086399.svg)](https://zenodo.org/badge/latestdoi/529086399)
-[![Codecov test
-coverage](https://codecov.io/gh/Bartesto/FireHistory/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Bartesto/FireHistory?branch=master)
 <!-- badges: end -->
 
 The goal of FireHistory is to provide tools to help extract useful fire
