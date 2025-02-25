@@ -5,9 +5,10 @@
 
 <!-- badges: start -->
 
-[![Project Status: Active â€“ The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Project Status: Unsupported – The project has reached a stable,
+usable state but the author(s) have ceased all work on it. A new
+maintainer may be
+desired.](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
 [![GitHub
 issues](https://img.shields.io/github/issues/dbca-wa/FireHistory.svg?style=popout)](https://github.com/dbca-wa/FireHistory/issues/)
 [![Last-changedate](https://img.shields.io/github/last-commit/dbca-wa/FireHistory.svg)](https://github.com/dbca-wa/FireHistory/commits/master)
