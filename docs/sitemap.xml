@@ -1,60 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/404.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/articles/one.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/index.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/assemble_data.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/DBCA_aoi.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/find_block.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/find_tenure.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/fin_yr.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/fire_freq.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/fire_interval.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/make_wkt.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/user_aoi.html</loc>
-  </url>
-  <url>
-    <loc>https://dbca-wa.github.io/FireHistory/reference/yslb.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://dbca-wa.github.io/FireHistory/404.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/articles/index.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/articles/one.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/authors.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/index.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/LICENSE-text.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/news/index.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/assemble_data.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/DBCA_aoi.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/find_block.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/find_tenure.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/fin_yr.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/fire_freq.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/fire_interval.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/index.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/make_wkt.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/pipe.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/user_aoi.html</loc></url>
+<url><loc>https://dbca-wa.github.io/FireHistory/reference/yslb.html</loc></url>
 </urlset>
+
